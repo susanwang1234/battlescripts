@@ -1,6 +1,7 @@
 body{
 	background-image: url("../img/binary2.jpg");
-	color: white;
+	color: #ffffff;
+	text-shadow: 2px 2px #0000ff
 }
 
 h1{
