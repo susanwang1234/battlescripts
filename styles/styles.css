@@ -1,0 +1,13 @@
+h1{
+	text-align: center;
+}
+
+form{
+	margin: auto;
+	width: 350px;
+}
+
+label{
+	float: left;
+	width: 120px;
+}
