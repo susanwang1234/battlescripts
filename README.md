@@ -1,3 +1,3 @@
-# codingCats
+# BattleScript
 
-Coding card games with a cat theme.
+Coding card game
