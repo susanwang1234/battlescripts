@@ -6,15 +6,20 @@ namespace BattleScripts
 {
 	public class Programmer : MonoBehaviour {
 
-		#region Private Fields
+		#region Public Fields
+		
+		/// <summary>
+		/// Instance of Programmer for current player to refer to
+		///</summary>
+		public static Programmer Instance;
+
+		/// <summary>
+		/// </summary>
+		public List<Code> Program;
 		
 		/// <summary>
 		/// </summary>
-		private List<Code> program;
-		
-		/// <summary>
-		/// </summary>
-		private List<Code> hand;
+		public List<Code> Hand;
 		
 		/// <summary>
 		/// Programmer hit points. 
@@ -22,7 +27,8 @@ namespace BattleScripts
 		/// - Will overflow or underflow (which should increment bugs)
 		/// - Programmer loses when bar == 0 
 		/// </summary>
-		private byte foo;
+		[Tooltip("Programmer's hit points")]
+		public byte Foo;
 
 		/// <summary>
 		/// Programmer energy points. 
@@ -30,15 +36,16 @@ namespace BattleScripts
 		/// - Will overflow or underflow (which should increment bugs)
 		/// - Programmer loses when bar == 0 
 		/// </summary>
-		private byte bar;
+		[Tooltip("Programmer's energy points")]
+		public byte Bar;
 
 		/// <summary>
 		/// # of bugs a programmer has
 		/// - Programmer loses when it hits a threshold defined in Consts
 		/// - Increments everytime foo or bar overflows or underflows
 		/// </summary>
-		private byte bugs;
-
+		[Tooltip("Programmer's bug count")]
+		public byte Bugs;
 
 		#endregion
 
@@ -49,10 +56,10 @@ namespace BattleScripts
 		public string PrintScreen()
 		{
 			string screen = "";
-			int n = program.Count;
+			int n = Program.Count;
 			for (int i = 0; i < n; i++)
 			{
-				screen += program[i].Display;
+				screen += Program[i].Display;
 				screen += "\n";
 			}
 			return screen;
@@ -62,7 +69,8 @@ namespace BattleScripts
 		#region MonoBehaviour CallBacks
 		// Use this for initialization
 		void Start () {
-			
+			Foo = Consts.START_FOO_POINTS;
+			Bar = Consts.START_BAR_POINTS;
 		}
 		
 		// Update is called once per frame

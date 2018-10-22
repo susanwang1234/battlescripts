@@ -15,6 +15,10 @@ namespace BattleScripts
     public class GameManager : MonoBehaviourPunCallbacks
     {
 
+        #region Public Fields
+        public static GameManager Instance;
+        #endregion
+
         #region Photon Callbacks
 
         /// <summary>
