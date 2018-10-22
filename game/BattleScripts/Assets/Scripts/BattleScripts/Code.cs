@@ -10,6 +10,12 @@ namespace BattleScripts
 	/// - Execute()
 	/// </summary>
 	public class Code  {
+		#region Public Fields
 		public string Display;
+		#endregion
+
+		#region Public Methods
+
+		#endregion
 	}
 }
