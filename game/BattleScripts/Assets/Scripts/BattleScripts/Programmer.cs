@@ -12,6 +12,10 @@ namespace BattleScripts
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 
+		[Tooltip("The Player's UI GameObject Prefab")]
+		[SerializeField]
+		public GameObject PlayerUiPrefab;
+
 		/// <summary>
 		/// </summary>
 		public List<Code> Program;
@@ -63,6 +67,22 @@ namespace BattleScripts
 			}
 			return screen;
 		}
+
+		public string GetFooText()
+		{
+			return "Foo : " + Foo.ToString();
+		}
+
+		public string GetBarText()
+		{
+			return "Bar : " + Bar.ToString();			
+		}
+
+		public string GetBugText()
+		{
+			return "Bug : " + Bugs.ToString();
+		}
+
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -83,7 +103,24 @@ namespace BattleScripts
 		void Start () {
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
-			Bugs = 0;
+			Bugs = Consts.START_BUG_COUNT;
+			if (PlayerUiPrefab != null)
+			{
+				GameObject _uiGo =  Instantiate(PlayerUiPrefab);
+				_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+			}
+			else
+			{
+				Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
+			}
+			#if UNITY_5_4_OR_NEWER
+			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
+					{
+						this.CalledOnLevelWasLoaded(scene.buildIndex);
+					};
+			#endif
+
 		}
 		
 		// Update is called once per frame
@@ -91,8 +128,16 @@ namespace BattleScripts
 			if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
 			{
 				return;
-			}
+			}			
+
 		}
+
+		void CalledOnLevelWasLoaded(int level)
+		{
+			GameObject _uiGo = Instantiate(this.PlayerUiPrefab);
+			_uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+		}
+
 		#endregion
 	
 		#region IPunObservable implementation

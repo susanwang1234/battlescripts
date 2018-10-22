@@ -19,22 +19,57 @@ namespace BattleScripts
 
         [Tooltip("UI Text to display Programmer's Foo")]
         [SerializeField]
-        private Text progFooDisplay;
+        private Text progFooText;
 
 		[Tooltip("UI Text to display Programmer's Bar")]
         [SerializeField]
-        private Text progBarDisplay;
+        private Text progBarText;
 
 		[Tooltip("UI Text to display Programmer's Bug Count")]
         [SerializeField]
-        private Text progBugDisplay;
+        private Text progBugText;
 
+
+        #endregion
+
+        #region Private Methods
+
+        void UpdateStatus()
+        {
+            if (progFooText != null)
+            {
+                progFooText.text = target.GetFooText();
+            }
+            if (progBarText != null)
+            {
+                progBarText.text = target.GetBarText();
+            }
+            if (progBugText != null)
+            {
+                progBugText.text = target.GetBugText();
+            }
+        }
 
         #endregion
 
 
         #region MonoBehaviour Callbacks
 
+        void Awake()
+        {
+            this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
+        }
+
+        void Update()
+        {
+            // Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
+			if (target == null)
+			{
+				Destroy(this.gameObject);
+				return;
+			}
+            UpdateStatus();
+        }
 
         #endregion
 
@@ -53,6 +88,7 @@ namespace BattleScripts
 			{
 				progNameText.text = target.photonView.Owner.NickName;
 			}
+            UpdateStatus();
 		}
 
         #endregion
