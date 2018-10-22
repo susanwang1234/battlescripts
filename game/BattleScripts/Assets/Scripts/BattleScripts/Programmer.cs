@@ -1,17 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace BattleScripts
 {
-	public class Programmer : MonoBehaviour {
+	public class Programmer : MonoBehaviourPunCallbacks, IPunObservable {
 
 		#region Public Fields
 		
-		/// <summary>
-		/// Instance of Programmer for current player to refer to
-		///</summary>
-		public static Programmer Instance;
+		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+		public static GameObject LocalPlayerInstance;
 
 		/// <summary>
 		/// </summary>
@@ -40,7 +39,7 @@ namespace BattleScripts
 		public byte Bar;
 
 		/// <summary>
-		/// # of bugs a programmer has
+		/// Programmer bug count
 		/// - Programmer loses when it hits a threshold defined in Consts
 		/// - Increments everytime foo or bar overflows or underflows
 		/// </summary>
@@ -67,16 +66,55 @@ namespace BattleScripts
 		#endregion
 
 		#region MonoBehaviour CallBacks
+		void Awake()
+		{
+			// #Important
+			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
+			if (photonView.IsMine)
+			{
+				Programmer.LocalPlayerInstance = this.gameObject;
+			}
+			// #Critical
+			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
+			DontDestroyOnLoad(this.gameObject);
+		}
+
 		// Use this for initialization
 		void Start () {
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
+			Bugs = 0;
 		}
 		
 		// Update is called once per frame
 		void Update () {
-			
+			if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+			{
+				return;
+			}
 		}
+		#endregion
+	
+		#region IPunObservable implementation
+
+		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.IsWriting)
+			{
+				// We own this player: send the others our data
+				stream.SendNext(Foo);
+				stream.SendNext(Bar);
+				stream.SendNext(Bugs);
+			}
+			else
+			{
+				// Network player, receive data
+				this.Foo = (byte)stream.ReceiveNext();
+				this.Bar = (byte)stream.ReceiveNext();
+				this.Bugs = (byte)stream.ReceiveNext();
+			}
+		}
+
 		#endregion
 	}
 }

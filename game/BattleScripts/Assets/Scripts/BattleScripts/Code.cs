@@ -38,10 +38,10 @@ namespace BattleScripts
 
 		#region Public Methods
 		
-		public Code(string d, Action a)
+		public Code(string _display, Action _action)
 		{
-			this.display = d;
-			this.action = a;
+			this.display = _display;
+			this.action = _action;
 		}
 
 		/// <summary>
