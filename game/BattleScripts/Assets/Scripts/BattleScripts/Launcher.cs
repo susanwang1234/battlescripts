@@ -136,6 +136,13 @@ namespace BattleScripts
                 // Load the Room Level.
                 PhotonNetwork.LoadLevel("Room for 1");
             }
+            else if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                // #Critical
+                // Load the Main Level
+                Debug.Log("Loading 'Room for 2' ");
+                PhotonNetwork.LoadLevel("Room for 2");
+            }
         }
         #endregion
     }
