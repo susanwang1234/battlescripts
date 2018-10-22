@@ -29,3 +29,11 @@ Apache:
 3. Find AddType in httpd.conf and add "AddType application/x-httpd-php .php" entry
 4. Find LoadModule in httpd.conf and add "LoadModule php7_module C:/php/php7apache2_4.dll" (or wherever you installed php)
 5. Laravel uses some OpenSSL module and it needs to be configured somewhere in either httpd.conf or php.ini? Couldn't resolve
+
+Unity:
+1. For Unity installation, here is the link https://unity3d.com/get-unity/download. 
+2. The game is accessible under BattleScript/game/BattleScripts/Assets/_Scenes. 
+3. The .unity files are the game scenes, which are what the Unity editor opens and allows to be edited. 
+4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder. 
+5. When building the game to debug, create a folder called Debug. the path should be BattleScript/game/BattleScripts/Debug
+6. The .gitignore file has been configured to ignore Debug folder.
