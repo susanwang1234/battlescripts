@@ -1,0 +1,50 @@
+h2 {
+	font-family: Arial, sans-serif;
+	color: white;
+}
+
+.categories {
+	text-align: center;
+    border-bottom: 2px black solid;
+    height: 40px;
+}
+.categories ul {
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.categories li {
+    display: inline;
+}
+
+.categories li a {
+	display: inline-block;
+    color: gray;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.categories li a:hover {
+    color: white;
+}
+
+#navPlayButton {
+	color: white;
+	background-color: orange;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("/images/background.png");
+
+  /* Half height */
+  height: 50%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
