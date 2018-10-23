@@ -14,8 +14,8 @@
 </div>
 <div class=categories style="margin-top:20px">
 	<ul>
-		<li><a href="/">ABOUT</a></li>
-		<li><a href="/">GAME GUIDE</a></li>
+		<li><a href="/about">ABOUT</a></li>
+		<li><a href="/tutorial">GAME GUIDE</a></li>
 		<li><a id="navPlayButton" href="/">PLAY NOW</a></li>
 	</ul>
 </div>
