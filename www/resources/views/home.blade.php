@@ -1,11 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center">BATTLESCRIPT HOME PAGE</h1>
-        </div>
-    </div>
+<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+<div class="bg">
+	<div class="container">
+	    <div class="row justify-content-center">
+	        <div class="col-md-8">
+	        	<img src="{{URL::asset('/images/logo_text.png')}}" class="center-block" style="width:100%; height=auto">
+	        </div>
+	    </div>
+	</div>
+
+</div>
+<div class=categories style="margin-top:20px">
+	<ul>
+		<li><a href="/">ABOUT</a></li>
+		<li><a href="/">GAME GUIDE</a></li>
+		<li><a id="navPlayButton" href="/">PLAY NOW</a></li>
+	</ul>
 </div>
 @endsection
