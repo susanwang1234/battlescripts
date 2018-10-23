@@ -53,3 +53,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1263998224453988, guid: eed6c23ca1f5a13449dc923cd6eb821b,
     type: 2}
+  playerUI: {fileID: 0}
+  p1Name: {fileID: 0}
+  p1Foo: {fileID: 0}
+  p1Bar: {fileID: 0}
+  p1Bugs: {fileID: 0}
+  p1Screen: {fileID: 0}
+  p2Name: {fileID: 0}
+  p2Foo: {fileID: 0}
+  p2Bar: {fileID: 0}
+  p2Bugs: {fileID: 0}
+  p2Screen: {fileID: 0}

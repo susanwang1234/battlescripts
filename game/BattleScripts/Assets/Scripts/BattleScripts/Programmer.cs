@@ -12,10 +12,6 @@ namespace BattleScripts
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 
-		[Tooltip("The Player's UI GameObject Prefab")]
-		[SerializeField]
-		public GameObject PlayerUiPrefab;
-
 		/// <summary>
 		/// </summary>
 		public List<Code> Program;
@@ -50,6 +46,8 @@ namespace BattleScripts
 		[Tooltip("Programmer's bug count")]
 		public byte Bugs;
 
+		public bool IsRegistered;
+
 		#endregion
 
 		#region Public Methods
@@ -66,6 +64,11 @@ namespace BattleScripts
 				screen += "\n";
 			}
 			return screen;
+		}
+
+		public string GetName()
+		{
+			return photonView.Owner.NickName;
 		}
 
 		public string GetFooText()
@@ -101,18 +104,10 @@ namespace BattleScripts
 
 		// Use this for initialization
 		void Start () {
+			IsRegistered = false;
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
 			Bugs = Consts.START_BUG_COUNT;
-			if (PlayerUiPrefab != null)
-			{
-				GameObject _uiGo =  Instantiate(PlayerUiPrefab);
-				_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-			}
-			else
-			{
-				Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
-			}
 			#if UNITY_5_4_OR_NEWER
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
@@ -125,6 +120,10 @@ namespace BattleScripts
 		
 		// Update is called once per frame
 		void Update () {
+			if (!IsRegistered && GameManager.Instance != null)
+			{
+				GameManager.Instance.Register(this);
+			}
 			if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
 			{
 				return;
@@ -134,8 +133,7 @@ namespace BattleScripts
 
 		void CalledOnLevelWasLoaded(int level)
 		{
-			GameObject _uiGo = Instantiate(this.PlayerUiPrefab);
-			_uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+			GameManager.Instance.Register(this);
 		}
 
 		#endregion
