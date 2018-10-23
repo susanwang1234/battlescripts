@@ -23,7 +23,8 @@ namespace BattleScripts
         public GameObject playerPrefab;
         [Tooltip("The P used for representing the player UI")]
         public GameObject playerUI;
-        public List<Programmer> ProgrammerCollection;
+        public Programmer p1;
+        public Programmer p2;
         public Text p1Name;
         public Text p1Foo;
         public Text p1Bar;
@@ -93,8 +94,7 @@ namespace BattleScripts
             else
             {
                 Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-            }
-            ProgrammerCollection = new List<Programmer>();
+            }            
         }
 
         void Update()
@@ -108,29 +108,13 @@ namespace BattleScripts
 
         void UpdatePlayerPanel()
         {
-            if (ProgrammerCollection.Count > 0)
+            if (p1 != null)
             {
-                p1Name.text = ProgrammerCollection[0].GetName();
-                p1Foo.text = ProgrammerCollection[0].GetFooText();
-                p1Bar.text = ProgrammerCollection[0].GetBarText();
-                p1Bugs.text = ProgrammerCollection[0].GetBugText();
-                p1Screen.text = ProgrammerCollection[0].GetName() + "'s Screen\n";
-                if (ProgrammerCollection.Count > 1)
-                {
-                    p2Name.text = ProgrammerCollection[1].GetName();
-                    p2Foo.text = ProgrammerCollection[1].GetFooText();
-                    p2Bar.text = ProgrammerCollection[1].GetBarText();
-                    p2Bugs.text = ProgrammerCollection[1].GetBugText();
-                    p2Screen.text = ProgrammerCollection[1].GetName() + "'s Screen\n";
-                }
-                else 
-                {
-                    p2Name.text = "";
-                    p2Foo.text = "";
-                    p2Bar.text = "";
-                    p2Bugs.text = "";
-                    p2Screen.text = "";
-                }
+                p1Name.text = p1.GetName();
+                p1Foo.text = p1.GetFooText();
+                p1Bar.text = p1.GetBarText();
+                p1Bugs.text = p1.GetBugText();
+                p1Screen.text = p1.GetName() + "'s Screen\n";                
             }    
             else
             {
@@ -140,6 +124,22 @@ namespace BattleScripts
                 p1Bugs.text = "";
                 p1Screen.text = "";
             }        
+            if (p2 != null)
+            {
+                p2Name.text = p2.GetName();
+                p2Foo.text = p2.GetFooText();
+                p2Bar.text = p2.GetBarText();
+                p2Bugs.text = p2.GetBugText();
+                p2Screen.text = p2.GetName() + "'s Screen\n";
+            }
+            else 
+            {
+                p2Name.text = "";
+                p2Foo.text = "";
+                p2Bar.text = "";
+                p2Bugs.text = "";
+                p2Screen.text = "";
+            }
         }
 
         void LoadArena()
@@ -158,14 +158,17 @@ namespace BattleScripts
 
         public void LeaveRoom()
         {
-            PhotonNetwork.LeaveRoom();
-            ProgrammerCollection = null;
+            PhotonNetwork.LeaveRoom();     
+            if(p1) p1.IsRegistered = false;
+            if(p2) p2.IsRegistered = false;       
             UpdatePlayerPanel();
         }
 
         public void Register(Programmer _prog)
         {
-            ProgrammerCollection.Add(_prog);
+            if (p1 == null) p1 = _prog;
+            else if (p2 == null && p1 !=_prog) p2 = _prog;
+            else Debug.Log("Theres an error with registering");
             _prog.IsRegistered = true;            
         }
 

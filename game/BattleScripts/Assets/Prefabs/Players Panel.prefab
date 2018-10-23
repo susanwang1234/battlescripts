@@ -319,7 +319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Foo : 127'
+  m_Text: 
 --- !u!114 &114205916649140994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,7 +352,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Bar : 127'
+  m_Text: 
 --- !u!114 &114322392612827048
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -412,7 +412,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Bar : 127'
+  m_Text: 
 --- !u!114 &114471619983518652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Programmer 2
+  m_Text: 
 --- !u!114 &114610330655673268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -478,7 +478,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Bugs : 0'
+  m_Text: 
 --- !u!114 &114637552680104442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -511,7 +511,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!114 &114640470800760452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Bugs : 0'
+  m_Text: 
 --- !u!114 &114727841090183908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -577,7 +577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Foo : 127'
+  m_Text: 
 --- !u!114 &114763946425851112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -610,7 +610,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Programmer 1
+  m_Text: 
 --- !u!114 &114896667434471692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -643,7 +643,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &222003762994942682
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -120,7 +120,8 @@ namespace BattleScripts
 		
 		// Update is called once per frame
 		void Update () {
-			if (!IsRegistered && GameManager.Instance != null)
+			if ((!IsRegistered && GameManager.Instance != null) ||
+			 (GameManager.Instance.p1 != this && GameManager.Instance.p2 != this))
 			{
 				GameManager.Instance.Register(this);
 			}
@@ -133,6 +134,7 @@ namespace BattleScripts
 
 		void CalledOnLevelWasLoaded(int level)
 		{
+			IsRegistered = false;
 			GameManager.Instance.Register(this);
 		}
 
@@ -148,6 +150,7 @@ namespace BattleScripts
 				stream.SendNext(Foo);
 				stream.SendNext(Bar);
 				stream.SendNext(Bugs);
+				stream.SendNext(IsRegistered);
 			}
 			else
 			{
@@ -155,6 +158,7 @@ namespace BattleScripts
 				this.Foo = (byte)stream.ReceiveNext();
 				this.Bar = (byte)stream.ReceiveNext();
 				this.Bugs = (byte)stream.ReceiveNext();
+				this.IsRegistered = (bool)stream.ReceiveNext();
 			}
 		}
 
