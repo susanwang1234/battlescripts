@@ -162,7 +162,7 @@ namespace BattleScripts
 				this.Bar = (byte)stream.ReceiveNext();
 				this.Bugs = (byte)stream.ReceiveNext();
 				this.IsRegistered = (bool)stream.ReceiveNext();
-				this.Bar = (bool)stream.ReceiveNext();
+				this.Turn = (bool)stream.ReceiveNext();
 			}
 		}
 
