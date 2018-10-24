@@ -17,10 +17,12 @@ namespace BattleScripts
 
 		/// <summary>
 		/// </summary>		
+		[SerializeField]
 		public List<Code> Program = null;
 		
 		/// <summary>
 		/// </summary>
+		[SerializeField]
 		public List<Code> Hand = null;
 		
 		/// <summary>
@@ -89,17 +91,7 @@ namespace BattleScripts
 		public string GetBugText()
 		{
 			return "Bug : " + Bugs.ToString();
-		}
-
-		public void GenerateHand()
-		{
-			Hand = new List<Code>();
-
-			for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
-			{
-				Hand.Add(Consts.CodeList[Random.Range(0, Consts.CodeList.Count)]);
-			}			
-		}
+		}		
 
 		#endregion
 
@@ -161,8 +153,23 @@ namespace BattleScripts
 		[PunRPC]
 		public void UpdateProgram(int i)
 		{
+			if (Program == null)
+			{
+				Program = new List<Code>();
+			}
 			Program.Add(Hand[i]);
             Hand[i] = Consts.CodeList[UnityEngine.Random.Range(0, Consts.CodeList.Count)];
+		}
+
+		[PunRPC]
+		public void GenerateHand()
+		{
+			Hand = new List<Code>();
+
+			for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+			{
+				Hand.Add(Consts.CodeList[Random.Range(0, Consts.CodeList.Count)]);
+			}			
 		}
 		#endregion
 

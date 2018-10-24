@@ -16,7 +16,6 @@ namespace BattleScripts
 
         #region Private Fields
         PhotonView p1view;
-        PhotonView p2view;
         #endregion
 
         #region Public Fields
@@ -164,9 +163,9 @@ namespace BattleScripts
                 }
                 return;
             }
-            if (p1.Hand.Count < Consts.MAX_CARDS_IN_HAND)
+            if (p1.Hand == null || p1.Hand.Count < Consts.MAX_CARDS_IN_HAND)
             {
-                p1.GenerateHand();
+                p1view.RPC("GenerateHand", RpcTarget.All);
             }
             for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
             {
@@ -216,7 +215,6 @@ namespace BattleScripts
             else if (p2 == null && p1 !=_prog) 
             {
                 p2 = _prog;
-                p2view = p2.photonView;
             }
             else Debug.Log("Theres an error with registering");
             _prog.IsRegistered = true;      
