@@ -27,12 +27,11 @@ namespace BattleScripts
 			get {return display;}
 			set {Display = display;}
 		}
-
 		/// <summary>
 		/// Action delegate
 		/// - Can be used to define an Action that can be assigned to code to run
 		/// </summary>
-		public delegate void Action();
+		public delegate void Action(Programmer p1, Programmer p2);
 		
 		#endregion
 
@@ -47,9 +46,9 @@ namespace BattleScripts
 		/// <summary>
 		/// Executes the code's action
 		/// </summary>
-		public void Execute()
+		public void Execute(Programmer p1, Programmer p2)
 		{
-			this.action();
+			this.action(p1, p2);
 		}
 
 		#endregion

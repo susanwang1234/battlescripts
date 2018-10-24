@@ -9,11 +9,15 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
-
 namespace BattleScripts
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
+
+        #region Private Fields
+        PhotonView p1view;
+        PhotonView p2view;
+        #endregion
 
         #region Public Fields
         
@@ -30,12 +34,13 @@ namespace BattleScripts
         public Text p1Bar;
         public Text p1Bugs;
         public Text p1Screen;
+        public GameObject[] p1Cards = new GameObject[5];
         public Text p2Name;
         public Text p2Foo;
         public Text p2Bar;
         public Text p2Bugs;
         public Text p2Screen;
-
+    
         #endregion
 
         #region Photon Callbacks
@@ -100,6 +105,7 @@ namespace BattleScripts
         void Update()
         {
             UpdatePlayerPanel();
+            ActivateHand();
         }
 
         #endregion
@@ -114,7 +120,7 @@ namespace BattleScripts
                 p1Foo.text = p1.GetFooText();
                 p1Bar.text = p1.GetBarText();
                 p1Bugs.text = p1.GetBugText();
-                p1Screen.text = p1.GetName() + "'s Screen\n";                
+                p1Screen.text = p1.PrintScreen();
             }    
             else
             {
@@ -130,7 +136,8 @@ namespace BattleScripts
                 p2Foo.text = p2.GetFooText();
                 p2Bar.text = p2.GetBarText();
                 p2Bugs.text = p2.GetBugText();
-                p2Screen.text = p2.GetName() + "'s Screen\n";
+                p2Screen.text = p2.PrintScreen();                
+                
             }
             else 
             {
@@ -138,9 +145,35 @@ namespace BattleScripts
                 p2Foo.text = "";
                 p2Bar.text = "";
                 p2Bugs.text = "";
-                p2Screen.text = "";
+                p2Screen.text = "";                
             }
         }
+
+        /// <summary>
+        /// Called to Geneate P1 Hand
+        /// Should be called in update function
+        /// </summary>
+        void ActivateHand()
+        {
+            if (!p1) return;
+            if (!p2)
+            {
+                for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+                {
+                    p1Cards[i].SetActive(false);
+                }
+                return;
+            }
+            if (p1.Hand.Count < Consts.MAX_CARDS_IN_HAND)
+            {
+                p1.GenerateHand();
+            }
+            for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+            {
+                p1Cards[i].SetActive(true);
+                p1Cards[i].GetComponentInChildren<Text>().text = p1.Hand[i].Display;
+            }
+        }        
 
         void LoadArena()
         {
@@ -155,6 +188,15 @@ namespace BattleScripts
         #endregion
 
         #region Public Methods
+        public void AddCard(int num)
+        {
+            if (num >= Consts.MAX_CARDS_IN_HAND || num < 0)
+            {
+                Debug.Log("Add Card was passed an invalid index");
+                return ;
+            }
+            p1view.RPC("UpdateProgram", RpcTarget.All, num);
+        }
 
         public void LeaveRoom()
         {
@@ -166,10 +208,22 @@ namespace BattleScripts
 
         public void Register(Programmer _prog)
         {
-            if (p1 == null) p1 = _prog;
-            else if (p2 == null && p1 !=_prog) p2 = _prog;
+            if (p1 == null) 
+            {
+                p1 = _prog;
+                p1view = p1.photonView;
+            }
+            else if (p2 == null && p1 !=_prog) 
+            {
+                p2 = _prog;
+                p2view = p2.photonView;
+            }
             else Debug.Log("Theres an error with registering");
-            _prog.IsRegistered = true;            
+            _prog.IsRegistered = true;      
+            if (_prog.Program == null)      
+            {
+                _prog.Program = new List<Code>();
+            }
         }
 
         #endregion

@@ -7,18 +7,21 @@ namespace BattleScripts
 {
 	public class Programmer : MonoBehaviourPunCallbacks, IPunObservable {
 
+		#region Private Fields
+		#endregion
+
 		#region Public Fields
 		
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 
 		/// <summary>
-		/// </summary>
-		public List<Code> Program;
+		/// </summary>		
+		public List<Code> Program = null;
 		
 		/// <summary>
 		/// </summary>
-		public List<Code> Hand;
+		public List<Code> Hand = null;
 		
 		/// <summary>
 		/// Programmer hit points. 
@@ -58,7 +61,7 @@ namespace BattleScripts
 		/// </summary>
 		public string PrintScreen()
 		{
-			string screen = "";
+			string screen = "// "+photonView.Owner.NickName+"\n"+Consts.START_SCREEN;
 			int n = Program.Count;
 			for (int i = 0; i < n; i++)
 			{
@@ -86,6 +89,16 @@ namespace BattleScripts
 		public string GetBugText()
 		{
 			return "Bug : " + Bugs.ToString();
+		}
+
+		public void GenerateHand()
+		{
+			Hand = new List<Code>();
+
+			for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+			{
+				Hand.Add(Consts.CodeList[Random.Range(0, Consts.CodeList.Count)]);
+			}			
 		}
 
 		#endregion
@@ -117,7 +130,6 @@ namespace BattleScripts
 						this.CalledOnLevelWasLoaded(scene.buildIndex);
 					};
 			#endif
-
 		}
 		
 		// Update is called once per frame
@@ -137,11 +149,23 @@ namespace BattleScripts
 		void CalledOnLevelWasLoaded(int level)
 		{
 			IsRegistered = false;
+			Turn = false;
+			Program = null;
+			Hand = null;
 			GameManager.Instance.Register(this);
 		}
 
 		#endregion
 	
+		#region PunRPC
+		[PunRPC]
+		public void UpdateProgram(int i)
+		{
+			Program.Add(Hand[i]);
+            Hand[i] = Consts.CodeList[UnityEngine.Random.Range(0, Consts.CodeList.Count)];
+		}
+		#endregion
+
 		#region IPunObservable implementation
 
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -154,6 +178,7 @@ namespace BattleScripts
 				stream.SendNext(Bugs);
 				stream.SendNext(IsRegistered);
 				stream.SendNext(Turn);
+				stream.SendNext(Program);
 			}
 			else
 			{
@@ -163,6 +188,7 @@ namespace BattleScripts
 				this.Bugs = (byte)stream.ReceiveNext();
 				this.IsRegistered = (bool)stream.ReceiveNext();
 				this.Turn = (bool)stream.ReceiveNext();
+				this.Program = (List<Code>)stream.ReceiveNext();
 			}
 		}
 

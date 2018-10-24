@@ -345,6 +345,31 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 195226211}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &195226224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1245070672717510, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
+    type: 2}
+  m_PrefabInternal: {fileID: 195226211}
+--- !u!1 &195226225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1701826270565598, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
+    type: 2}
+  m_PrefabInternal: {fileID: 195226211}
+--- !u!1 &195226226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1394903111051818, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
+    type: 2}
+  m_PrefabInternal: {fileID: 195226211}
+--- !u!1 &195226227 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1175343438754360, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
+    type: 2}
+  m_PrefabInternal: {fileID: 195226211}
+--- !u!1 &195226228 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1974598974885268, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
+    type: 2}
+  m_PrefabInternal: {fileID: 195226211}
 --- !u!224 &360558152 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224850820495281478, guid: bb407a3943554b440a9c2c27ea9d7c8a,
@@ -622,6 +647,31 @@ Prefab:
       propertyPath: p2Screen
       value: 
       objectReference: {fileID: 195226214}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: p1Cards.Array.data[0]
+      value: 
+      objectReference: {fileID: 195226228}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: p1Cards.Array.data[1]
+      value: 
+      objectReference: {fileID: 195226227}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: p1Cards.Array.data[2]
+      value: 
+      objectReference: {fileID: 195226226}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: p1Cards.Array.data[3]
+      value: 
+      objectReference: {fileID: 195226225}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: p1Cards.Array.data[4]
+      value: 
+      objectReference: {fileID: 195226224}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8099014ff4134e4e89678a84cd0d6ff, type: 2}
   m_IsPrefabAsset: 0
