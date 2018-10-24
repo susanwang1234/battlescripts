@@ -48,6 +48,8 @@ namespace BattleScripts
 
 		public bool IsRegistered;
 
+		public bool Turn;
+
 		#endregion
 
 		#region Public Methods
@@ -151,6 +153,7 @@ namespace BattleScripts
 				stream.SendNext(Bar);
 				stream.SendNext(Bugs);
 				stream.SendNext(IsRegistered);
+				stream.SendNext(Turn);
 			}
 			else
 			{
@@ -159,6 +162,7 @@ namespace BattleScripts
 				this.Bar = (byte)stream.ReceiveNext();
 				this.Bugs = (byte)stream.ReceiveNext();
 				this.IsRegistered = (bool)stream.ReceiveNext();
+				this.Bar = (bool)stream.ReceiveNext();
 			}
 		}
 
