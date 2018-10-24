@@ -21,19 +21,43 @@ namespace BattleScripts
 		#endregion
 
 		#region Code Descriptions
-		public const string CODE_DESC_1 = "p1.Foo++;";
-		public const string CODE_DESC_2 = "p2.Foo--;";
+		public const string CODE_DESC_1 = "p1.Foo += 16;";
+		public const string CODE_DESC_2 = "p2.Foo -= 16;";
+		public const string CODE_DESC_3 = "p1.Bar += 16;";
+		public const string CODE_DESC_4 = "p2.Bar -= 16;";
+		public const string CODE_DESC_5 = "if (p1.Foo < p2.Foo) swap(p1.Foo, p2.Foo);";
 		#endregion
 
 		#region Code Functions
-		private static void Action_1(Programmer p1, Programmer p2)
+		
+		private static void ACTION_1(Programmer p1, Programmer p2)
 		{
-			p1.Foo++;
+			p1.Foo += 16;
 		}
 
-		private static void Action_2(Programmer p1, Programmer p2)
+		private static void ACTION_2(Programmer p1, Programmer p2)
 		{
-			p2.Foo--;
+			p2.Foo -= 16;
+		}
+
+		private static void ACTION_3(Programmer p1, Programmer p2)
+		{
+			p1.Bar += 16;
+		}
+
+		private static void ACTION_4(Programmer p1, Programmer p2)
+		{
+			p2.Bar -= 16;
+		}
+
+		private static void ACTION_5(Programmer p1, Programmer p2)
+		{
+			if (p1.Foo < p2.Foo)
+			{
+				byte tmp = p1.Foo;
+				p1.Foo = p2.Foo;
+				p2.Foo = tmp;
+			}
 		}
 
 		#endregion
@@ -41,8 +65,11 @@ namespace BattleScripts
 		#region Code List
 		public static List<Code> CodeList = new List<Code>()
 		{
-			new Code(CODE_DESC_1, Action_1),
-			new Code(CODE_DESC_2, Action_2)
+			new Code(CODE_DESC_1, ACTION_1),
+			new Code(CODE_DESC_2, ACTION_2),
+			new Code(CODE_DESC_3, ACTION_3),
+			new Code(CODE_DESC_4, ACTION_4),
+			new Code(CODE_DESC_5, ACTION_5)
 		};
 		#endregion
 	}
