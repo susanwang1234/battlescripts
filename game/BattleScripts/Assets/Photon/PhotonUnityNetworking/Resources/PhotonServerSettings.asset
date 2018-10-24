@@ -32,4 +32,5 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - UpdateProgram
+  - GenerateHand
   DisableAutoOpenWizard: 1

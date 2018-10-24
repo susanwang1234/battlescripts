@@ -186,6 +186,7 @@ namespace BattleScripts
 				stream.SendNext(IsRegistered);
 				stream.SendNext(Turn);
 				stream.SendNext(Program);
+				stream.SendNext(Hand);
 			}
 			else
 			{
@@ -196,6 +197,7 @@ namespace BattleScripts
 				this.IsRegistered = (bool)stream.ReceiveNext();
 				this.Turn = (bool)stream.ReceiveNext();
 				this.Program = (List<Code>)stream.ReceiveNext();
+				this.Hand = (List<Code>)stream.ReceiveNext();
 			}
 		}
 
