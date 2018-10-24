@@ -25,3 +25,6 @@ Route::get('/tutorial', function () {
 Route::get('/about', function () {
     return view('about');
 });
+Route::get('/start', function () {
+    return view('start');
+});
