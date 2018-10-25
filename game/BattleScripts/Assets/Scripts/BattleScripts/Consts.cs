@@ -25,7 +25,7 @@ namespace BattleScripts
 		public const string CODE_DESC_2 = "p2.Foo -= 16;";
 		public const string CODE_DESC_3 = "p1.Bar += 16;";
 		public const string CODE_DESC_4 = "p2.Bar -= 16;";
-		public const string CODE_DESC_5 = "if (p1.Foo < p2.Foo) swap(p1.Foo, p2.Foo);";
+		public const string CODE_DESC_5 = "if (p1.Foo < p2.Foo)\n\tswap(p1.Foo, p2.Foo);";
 		#endregion
 
 		#region Code Functions

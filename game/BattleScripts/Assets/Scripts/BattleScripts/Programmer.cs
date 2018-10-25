@@ -17,12 +17,10 @@ namespace BattleScripts
 
 		/// <summary>
 		/// </summary>		
-		[SerializeField]
 		public List<Code> Program = null;
 		
 		/// <summary>
 		/// </summary>
-		[SerializeField]
 		public List<Code> Hand = null;
 		
 		/// <summary>
@@ -62,13 +60,27 @@ namespace BattleScripts
 		/// Displays the program that the Programmer has
 		/// </summary>
 		public string PrintScreen()
-		{
+		{			
 			string screen = "// "+photonView.Owner.NickName+"\n"+Consts.START_SCREEN;
+
+			#region DEBUG
+			screen += "DEBUG\n";
+			screen += "Hand is : \n";
+			if (Hand != null)
+			{
+				for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+				{
+					screen += i.ToString() + " - " + Hand[i].Display + "\n";
+				}
+			}			
+			screen += "DEBUG\n";
+			#endregion
+
 			int n = Program.Count;
+
 			for (int i = 0; i < n; i++)
 			{
-				screen += Program[i].Display;
-				screen += "\n";
+				screen += Program[i].Display + "\n";
 			}
 			return screen;
 		}
