@@ -48,7 +48,8 @@ Local Database:
 	- $cfg['Servers'][$i]['extension'] = 'mysqli';
 	- $cfg['Servers'][$i]['AllowNoPassword'] = true;
 	- $cfg['Lang'] = '';
-	confirm that you have the above setting.
+
+confirm that you have the above setting.
 4. In XAMPP Control Panel start MySql
 5. In your browser type in localhost:8000/phpmyadmin
 6. Login with the above "username" and "password"
@@ -64,11 +65,11 @@ Local Database:
 11. You should now be able to register a user and login with it, or alternatively create a user in the database and login form the web.
 
 Access Routes:
-1. About, Tutorial, and Getting Started pages are accessible by all users through connected routes or via page links.
+1. About, Tutorial, and Getting Started pages are accessible by all users through connected routes or via page links.  
 Routes:
 	- localhost:8000/about
 	- localhost:8000/tutorial
 	- localhost:8000/start
-2. Play Game link has been configured so users can only access the game after the user has logged in. If user is already logged in, they will be after to obtain access to the game, otherwise, they will be directed to the login screen.
+2. Play Game link has been configured so users can only access the game after the user has logged in. If user is already logged in, they will be after to obtain access to the game, otherwise, they will be directed to the login screen.  
 Route(after logging in):
 	- localhost:8000/unity
