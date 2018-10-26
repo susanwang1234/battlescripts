@@ -42,12 +42,12 @@ Local Database:
 1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
 2. Go to xampp/phpMyAdmin/config.inc.php
 3. under /*Authentication type and info*/
-	$cfg['Servers'][$i]['auth_type'] = 'cookie';
-	$cfg['Servers'][$i]['user'] = 'root';
-	$cfg['Servers'][$i]['password'] = '123456';
-	$cfg['Servers'][$i]['extension'] = 'mysqli';
-	$cfg['Servers'][$i]['AllowNoPassword'] = true;
-	$cfg['Lang'] = '';
+	- $cfg['Servers'][$i]['auth_type'] = 'cookie';
+	- $cfg['Servers'][$i]['user'] = 'root';
+	- $cfg['Servers'][$i]['password'] = '123456';
+	- $cfg['Servers'][$i]['extension'] = 'mysqli';
+	- $cfg['Servers'][$i]['AllowNoPassword'] = true;
+	- $cfg['Lang'] = '';
 	confirm that you have the above setting.
 4. In XAMPP Control Panel start MySql
 5. In your browser type in localhost:8000/phpmyadmin
@@ -55,9 +55,9 @@ Local Database:
 7. On the most left side of the navigation bar click on Database
 8. Create a new database "battlescript" *you do not need to create any table
 9. Under /www/ directory open the ".env" file in a text editor and set the following(should be in line 12-14):
-	DB_DATABASE=battlescript
-	DB_USERNAME=root
-	DB_PASSWORD=123456
+	- DB_DATABASE=battlescript
+	- DB_USERNAME=root
+	- DB_PASSWORD=123456
 9. In the same directory "/www/" open a terminal and run "php artisan migrate"
 10. refresh your browser and go in to your database
 	"battlescript". You should see 3 tables "migrations", "password_resets", "users".
@@ -66,9 +66,9 @@ Local Database:
 Access Routes:
 1. About, Tutorial, and Getting Started pages are accessible by all users through connected routes or via page links.
 Routes:
-	localhost:8000/about
-	localhost:8000/tutorial
-	localhost:8000/start
+	- localhost:8000/about
+	- localhost:8000/tutorial
+	- localhost:8000/start
 2. Play Game link has been configured so users can only access the game after the user has logged in. If user is already logged in, they will be after to obtain access to the game, otherwise, they will be directed to the login screen.
 Route(after logging in):
-	localhost:8000/unity
+	- localhost:8000/unity
