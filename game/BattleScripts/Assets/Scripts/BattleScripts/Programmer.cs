@@ -5,20 +5,32 @@ using Photon.Pun;
 
 namespace BattleScripts
 {
-	public class Programmer : MonoBehaviourPunCallbacks, IPunObservable {
+	public class Programmer : MonoBehaviourPunCallbacks {
+
+		#region Private Fields
+		#endregion
 
 		#region Public Fields
 		
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-		public static GameObject LocalPlayerInstance;
-
+		public static GameObject LocalPlayerInstance;		
+		[Tooltip("Leave this blank, will be linked to RNG class during runtime")]
+		public RNG rng;
 		/// <summary>
-		/// </summary>
-		public List<Code> Program;
+		/// List of Code that will be executed when executed is called
+		/// 
+		/// Consumes Bar for each code executed
+		/// </summary>		
+		public List<Code> Program = null;
 		
 		/// <summary>
+		/// List of Code that the Player can select to add to its program
+		/// 
+		/// Will be empty on Game Start and needs to be drawn one at a time to ensure network has time to sync
+		/// 
+		/// Will replace card added to Program automatically
 		/// </summary>
-		public List<Code> Hand;
+		public List<Code> Hand = null;
 		
 		/// <summary>
 		/// Programmer hit points. 
@@ -46,7 +58,15 @@ namespace BattleScripts
 		[Tooltip("Programmer's bug count")]
 		public byte Bugs;
 
+		/// <summary>
+		/// Checks to see if the programmer is registered with Game Manager
+		/// </summary>
 		public bool IsRegistered;
+
+		/// <summary>
+		///	Checks to see if it is this player's turn
+		/// </summary>
+		public bool Turn;
 
 		#endregion
 
@@ -55,17 +75,18 @@ namespace BattleScripts
 		/// Displays the program that the Programmer has
 		/// </summary>
 		public string PrintScreen()
-		{
-			string screen = "";
-			int n = Program.Count;
-			for (int i = 0; i < n; i++)
+		{			
+			string screen = "// "+photonView.Owner.NickName+"\n"+Consts.START_SCREEN;
+
+			if (Program != null)
 			{
-				screen += Program[i].Display;
-				screen += "\n";
-			}
+				for (int i = 0, n = Program.Count; i < n; i++)
+				{
+					screen += Program[i].Display + "\n";
+				}
+			}			
 			return screen;
 		}
-
 		public string GetName()
 		{
 			return photonView.Owner.NickName;
@@ -84,6 +105,26 @@ namespace BattleScripts
 		public string GetBugText()
 		{
 			return "Bug : " + Bugs.ToString();
+		}		
+
+		/// <summary>
+		/// Used to excute a player's program.
+		/// 
+		/// Will consume 10 Bar per execution.
+		///
+		/// Deletes Program Afterwards.
+		public void Execute(Programmer p1, Programmer p2)
+		{
+			if (Program == null) return;
+			byte overflow;
+			foreach (Code c in Program)
+			{				
+				c.Execute(p1, p2);				
+				overflow = Bar;
+				Bar -= 16;
+				if (overflow < Bar) Bugs++;
+			}
+			Program = new List<Code>();
 		}
 
 		#endregion
@@ -105,6 +146,7 @@ namespace BattleScripts
 		// Use this for initialization
 		void Start () {
 			IsRegistered = false;
+			rng = this.GetComponent<RNG>();
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
 			Bugs = Consts.START_BUG_COUNT;
@@ -115,7 +157,6 @@ namespace BattleScripts
 						this.CalledOnLevelWasLoaded(scene.buildIndex);
 					};
 			#endif
-
 		}
 		
 		// Update is called once per frame
@@ -128,40 +169,66 @@ namespace BattleScripts
 			if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
 			{
 				return;
-			}			
-
+			}								
 		}
 
 		void CalledOnLevelWasLoaded(int level)
 		{
 			IsRegistered = false;
+			Turn = false;
+			Program = null;
+			Hand = null;
 			GameManager.Instance.Register(this);
 		}
 
 		#endregion
-	
-		#region IPunObservable implementation
+		
+		#region PunRPC Public Methods
 
-		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+		/// <summary>
+		/// Called by GameManager to Draw Card 
+		/// </summary>
+		[PunRPC]
+		public void DrawCard()
 		{
-			if (stream.IsWriting)
-			{
-				// We own this player: send the others our data
-				stream.SendNext(Foo);
-				stream.SendNext(Bar);
-				stream.SendNext(Bugs);
-				stream.SendNext(IsRegistered);
-			}
-			else
-			{
-				// Network player, receive data
-				this.Foo = (byte)stream.ReceiveNext();
-				this.Bar = (byte)stream.ReceiveNext();
-				this.Bugs = (byte)stream.ReceiveNext();
-				this.IsRegistered = (bool)stream.ReceiveNext();
-			}
+			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) Hand.Add(Consts.CodeList[rng.GetRandomInt()]);
 		}
 
-		#endregion
+		/// <summary>
+		/// Will generate Program if it doesn't exist
+		/// 
+		/// Adds the ith card in your hand to the program
+		///
+		/// Will replace the card automatically
+		/// </summary>
+		[PunRPC]
+		public void UpdateProgram(int i)
+		{
+			if (Program == null)
+			{
+				Program = new List<Code>();
+			}
+			Program.Add(Hand[i]);
+			Hand[i] = Consts.CodeList[rng.GetRandomInt()];
+		}
+		/// <summary>
+		/// Generates Hand
+		/// </summary>
+		[PunRPC]
+		public void GenerateHand()
+		{
+			Hand = new List<Code>();		
+		}
+
+		/// <summary>
+		/// RPC Call of Execute
+		/// </summary>
+		[PunRPC]
+		public void RpcExecute()
+		{
+			// #critical need to switch p1 and p2 around to because game manager has different p1
+			Execute(GameManager.Instance.p2, GameManager.Instance.p1);
+		}
+		#endregion		
 	}
 }

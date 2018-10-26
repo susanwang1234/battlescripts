@@ -31,4 +31,13 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - UpdateProgram
+  - GenerateHand
+  - AddCard
+  - ReplaceCard
+  - Execute
+  - Modifiy
+  - Modify
+  - DrawCard
+  - RpcExecute
   DisableAutoOpenWizard: 1

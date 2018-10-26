@@ -51,14 +51,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee757cd47e4deb5469ae77bf17060f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  p1view: {fileID: 0}
   playerPrefab: {fileID: 1263998224453988, guid: eed6c23ca1f5a13449dc923cd6eb821b,
     type: 2}
   playerUI: {fileID: 0}
+  p1: {fileID: 0}
+  p2: {fileID: 0}
   p1Name: {fileID: 0}
   p1Foo: {fileID: 0}
   p1Bar: {fileID: 0}
   p1Bugs: {fileID: 0}
   p1Screen: {fileID: 0}
+  p1Cards:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ExeGameObj: {fileID: 0}
+  DrawCardObj: {fileID: 0}
   p2Name: {fileID: 0}
   p2Foo: {fileID: 0}
   p2Bar: {fileID: 0}
