@@ -183,9 +183,12 @@ namespace BattleScripts
                     p1Cards[i].SetActive(false);
                 }
             }
-            DrawCardObj.SetActive(p1.Hand.Count < Consts.MAX_CARDS_IN_HAND);
+            DrawCardObj.SetActive(p1.Hand.Count < Consts.MAX_CARDS_IN_HAND && p2 != null);
         }        
 
+        /// <summary>
+        /// Load Room based on number of players
+        /// </summary>
         void LoadArena()
         {
             if (!PhotonNetwork.IsMasterClient)
@@ -213,6 +216,10 @@ namespace BattleScripts
             p1view.RPC("UpdateProgram", RpcTarget.All, num);
         }
 
+        /// <summary>
+        /// Calls an RPC call for players when called
+        /// - Should be attached to DrawCardObj onclick function
+        /// </summary>
         public void DrawCard()
         {
             if (p1.Hand.Count < Consts.MAX_CARDS_IN_HAND) 
@@ -222,6 +229,10 @@ namespace BattleScripts
                 
         }
 
+        /// <summary>
+        /// Forces player to leave the game
+        /// - Unregisters players
+        /// </summary>
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();     

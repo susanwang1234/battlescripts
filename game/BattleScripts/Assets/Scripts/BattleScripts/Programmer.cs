@@ -65,19 +65,6 @@ namespace BattleScripts
 		{			
 			string screen = "// "+photonView.Owner.NickName+"\n"+Consts.START_SCREEN;
 
-			#region DEBUG
-			screen += "DEBUG\n";
-			screen += "RandVal : " + rng.RandVal.ToString() + "\n";
-			screen += "Hand is : \n";
-			if (Hand != null)
-			{
-				for (int i = 0, n = Hand.Count; i < n; i++)
-				{
-					screen += Hand[i].Display + "\n";
-				}
-			}			
-			screen += "DEBUG\n";
-			#endregion
 			if (Program != null)
 			{
 				for (int i = 0, n = Program.Count; i < n; i++)
