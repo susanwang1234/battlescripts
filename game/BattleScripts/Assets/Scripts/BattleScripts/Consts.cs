@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 
 namespace BattleScripts
 {
@@ -21,10 +22,10 @@ namespace BattleScripts
 		#endregion
 
 		#region Code Descriptions
-		public const string CODE_DESC_1 = "p1.Foo += 16;";
-		public const string CODE_DESC_2 = "p2.Foo -= 16;";
-		public const string CODE_DESC_3 = "p1.Bar += 16;";
-		public const string CODE_DESC_4 = "p2.Bar -= 16;";
+		public const string CODE_DESC_1 = "0. p1.Foo += 16;";
+		public const string CODE_DESC_2 = "1. p2.Foo -= 16;";
+		public const string CODE_DESC_3 = "2. p1.Bar += 16;";
+		public const string CODE_DESC_4 = "3. p2.Bar -= 16;";
 		public const string CODE_DESC_5 = "if (p1.Foo < p2.Foo)\n\tswap(p1.Foo, p2.Foo);";
 		#endregion
 
@@ -32,32 +33,26 @@ namespace BattleScripts
 		
 		private static void ACTION_1(Programmer p1, Programmer p2)
 		{
-			p1.Foo += 16;
+			byte mod = 16;
+			p1.photonView.RPC("Modify", RpcTarget.All, p1.Foo, mod, true);
 		}
 
 		private static void ACTION_2(Programmer p1, Programmer p2)
 		{
-			p2.Foo -= 16;
+			byte mod = 16;
+			p2.photonView.RPC("Modify", RpcTarget.All, p1.Foo, mod, false);
 		}
 
 		private static void ACTION_3(Programmer p1, Programmer p2)
 		{
-			p1.Bar += 16;
+			byte mod = 16;
+			p1.photonView.RPC("Modify", RpcTarget.All, p1.Bar, mod, true);
 		}
 
 		private static void ACTION_4(Programmer p1, Programmer p2)
 		{
-			p2.Bar -= 16;
-		}
-
-		private static void ACTION_5(Programmer p1, Programmer p2)
-		{
-			if (p1.Foo < p2.Foo)
-			{
-				byte tmp = p1.Foo;
-				p1.Foo = p2.Foo;
-				p2.Foo = tmp;
-			}
+			byte mod = 16;
+			p2.photonView.RPC("Modify", RpcTarget.All, p2.Bar, mod, false);
 		}
 
 		#endregion
@@ -68,8 +63,7 @@ namespace BattleScripts
 			new Code(CODE_DESC_1, ACTION_1),
 			new Code(CODE_DESC_2, ACTION_2),
 			new Code(CODE_DESC_3, ACTION_3),
-			new Code(CODE_DESC_4, ACTION_4),
-			new Code(CODE_DESC_5, ACTION_5)
+			new Code(CODE_DESC_4, ACTION_4)
 		};
 		#endregion
 	}

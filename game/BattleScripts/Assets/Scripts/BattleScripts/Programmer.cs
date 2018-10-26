@@ -8,13 +8,15 @@ namespace BattleScripts
 	public class Programmer : MonoBehaviourPunCallbacks, IPunObservable {
 
 		#region Private Fields
+		int replaceIndex;
+		bool replace = false;
 		#endregion
 
 		#region Public Fields
 		
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-		public static GameObject LocalPlayerInstance;
-
+		public static GameObject LocalPlayerInstance;		
+		public RNG rng;
 		/// <summary>
 		/// </summary>		
 		public List<Code> Program = null;
@@ -65,23 +67,24 @@ namespace BattleScripts
 
 			#region DEBUG
 			screen += "DEBUG\n";
+			screen += "RandVal : " + rng.RandVal.ToString() + "\n";
 			screen += "Hand is : \n";
 			if (Hand != null)
 			{
-				for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+				for (int i = 0, n = Hand.Count; i < n; i++)
 				{
-					screen += i.ToString() + " - " + Hand[i].Display + "\n";
+					screen += Hand[i].Display + "\n";
 				}
 			}			
 			screen += "DEBUG\n";
 			#endregion
-
-			int n = Program.Count;
-
-			for (int i = 0; i < n; i++)
+			if (Program != null)
 			{
-				screen += Program[i].Display + "\n";
-			}
+				for (int i = 0, n = Program.Count; i < n; i++)
+				{
+					screen += Program[i].Display + "\n";
+				}
+			}			
 			return screen;
 		}
 
@@ -124,6 +127,7 @@ namespace BattleScripts
 		// Use this for initialization
 		void Start () {
 			IsRegistered = false;
+			rng = this.GetComponent<RNG>();
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
 			Bugs = Consts.START_BUG_COUNT;
@@ -147,7 +151,15 @@ namespace BattleScripts
 			{
 				return;
 			}			
-
+			if (Hand != null)
+			{			
+				if (replace)
+				{
+					photonView.RPC("ReplaceCard", RpcTarget.All, replaceIndex);
+					rng.Randomize();					
+					replace = false;
+				}				
+			}							
 		}
 
 		void CalledOnLevelWasLoaded(int level)
@@ -160,8 +172,44 @@ namespace BattleScripts
 		}
 
 		#endregion
-	
-		#region PunRPC
+		
+		#region PunRPC Public Methods
+
+		[PunRPC]
+		public void Modify(byte pField, byte amount, bool add)
+		{
+			byte overflow = pField;
+			if (add) 
+			{
+				pField += amount;
+				if (pField < overflow) 
+				{
+					Bugs++;
+				}
+			}
+			else
+			{
+				pField -= amount;
+				if (pField > amount)
+				{
+					Bugs++;
+				}
+			}
+		}
+
+		[PunRPC]
+		public void DrawCard()
+		{
+			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) Hand.Add(Consts.CodeList[rng.RandVal]);
+			rng.Randomize();
+		}
+
+		[PunRPC]
+		public void ReplaceCard(int i)
+		{
+			Hand[i] = Consts.CodeList[rng.RandVal];
+		}
+
 		[PunRPC]
 		public void UpdateProgram(int i)
 		{
@@ -170,18 +218,29 @@ namespace BattleScripts
 				Program = new List<Code>();
 			}
 			Program.Add(Hand[i]);
-            Hand[i] = Consts.CodeList[UnityEngine.Random.Range(0, Consts.CodeList.Count)];
+			replaceIndex = i;
+			replace = true;
 		}
 
 		[PunRPC]
 		public void GenerateHand()
 		{
-			Hand = new List<Code>();
+			Hand = new List<Code>();		
+		}
 
-			for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
+		/// <summary>
+		/// Used to excute a player's program
+		/// Deletes Program Afterwards
+		/// </summary>
+		[PunRPC]
+		public void Execute()
+		{
+			if (Program == null) return;
+			foreach (Code c in Program)
 			{
-				Hand.Add(Consts.CodeList[Random.Range(0, Consts.CodeList.Count)]);
-			}			
+				c.Execute(GameManager.Instance.p1, GameManager.Instance.p2);
+			}
+			Program = new List<Code>();
 		}
 		#endregion
 
@@ -189,28 +248,28 @@ namespace BattleScripts
 
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 		{
-			if (stream.IsWriting)
-			{
-				// We own this player: send the others our data
-				stream.SendNext(Foo);
-				stream.SendNext(Bar);
-				stream.SendNext(Bugs);
-				stream.SendNext(IsRegistered);
-				stream.SendNext(Turn);
-				stream.SendNext(Program);
-				stream.SendNext(Hand);
-			}
-			else
-			{
-				// Network player, receive data
-				this.Foo = (byte)stream.ReceiveNext();
-				this.Bar = (byte)stream.ReceiveNext();
-				this.Bugs = (byte)stream.ReceiveNext();
-				this.IsRegistered = (bool)stream.ReceiveNext();
-				this.Turn = (bool)stream.ReceiveNext();
-				this.Program = (List<Code>)stream.ReceiveNext();
-				this.Hand = (List<Code>)stream.ReceiveNext();
-			}
+			// if (stream.IsWriting)
+			// {
+			// 	// We own this player: send the others our data
+			// 	stream.SendNext(Foo);
+			// 	stream.SendNext(Bar);
+			// 	stream.SendNext(Bugs);
+			// 	stream.SendNext(IsRegistered);
+			// 	stream.SendNext(Turn);
+			// 	stream.SendNext(Program);
+			// 	stream.SendNext(Hand);
+			// }
+			// else
+			// {
+			// 	// Network player, receive data
+			// 	this.Foo = (byte)stream.ReceiveNext();
+			// 	this.Bar = (byte)stream.ReceiveNext();
+			// 	this.Bugs = (byte)stream.ReceiveNext();
+			// 	this.IsRegistered = (bool)stream.ReceiveNext();
+			// 	this.Turn = (bool)stream.ReceiveNext();
+			// 	this.Program = (List<Code>)stream.ReceiveNext();
+			// 	this.Hand = (List<Code>)stream.ReceiveNext();
+			// }
 		}
 
 		#endregion

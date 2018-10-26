@@ -15,6 +15,7 @@ namespace BattleScripts
     {
 
         #region Private Fields
+        [SerializeField]
         PhotonView p1view;
         #endregion
 
@@ -34,6 +35,8 @@ namespace BattleScripts
         public Text p1Bugs;
         public Text p1Screen;
         public GameObject[] p1Cards = new GameObject[5];
+        public GameObject ExeGameObj;
+        public GameObject DrawCardObj;
         public Text p2Name;
         public Text p2Foo;
         public Text p2Bar;
@@ -136,7 +139,7 @@ namespace BattleScripts
                 p2Bar.text = p2.GetBarText();
                 p2Bugs.text = p2.GetBugText();
                 p2Screen.text = p2.PrintScreen();                
-                
+                if (ExeGameObj != null ) ExeGameObj.SetActive(true);
             }
             else 
             {
@@ -145,12 +148,13 @@ namespace BattleScripts
                 p2Bar.text = "";
                 p2Bugs.text = "";
                 p2Screen.text = "";                
+                if (ExeGameObj != null ) ExeGameObj.SetActive(false);
             }
         }
 
         /// <summary>
         /// Called to Geneate P1 Hand
-        /// Should be called in update function
+        /// - Should be called in update function
         /// </summary>
         void ActivateHand()
         {
@@ -163,15 +167,23 @@ namespace BattleScripts
                 }
                 return;
             }
-            if (p1.Hand == null || p1.Hand.Count < Consts.MAX_CARDS_IN_HAND)
+            if (p1.Hand == null)
             {
                 p1view.RPC("GenerateHand", RpcTarget.All);
             }
             for (int i = 0; i < Consts.MAX_CARDS_IN_HAND; i++)
             {
-                p1Cards[i].SetActive(true);
-                p1Cards[i].GetComponentInChildren<Text>().text = p1.Hand[i].Display;
+                if (i < p1.Hand.Count)
+                {                
+                    p1Cards[i].SetActive(true);
+                    p1Cards[i].GetComponentInChildren<Text>().text = p1.Hand[i].Display;
+                }
+                else
+                {
+                    p1Cards[i].SetActive(false);
+                }
             }
+            DrawCardObj.SetActive(p1.Hand.Count < Consts.MAX_CARDS_IN_HAND);
         }        
 
         void LoadArena()
@@ -187,6 +199,10 @@ namespace BattleScripts
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Adds card at position I of hand to program
+        /// Then generates a new card in that position
+        /// </summary>
         public void AddCard(int num)
         {
             if (num >= Consts.MAX_CARDS_IN_HAND || num < 0)
@@ -197,12 +213,41 @@ namespace BattleScripts
             p1view.RPC("UpdateProgram", RpcTarget.All, num);
         }
 
+        public void DrawCard()
+        {
+            if (p1.Hand.Count < Consts.MAX_CARDS_IN_HAND) 
+            {
+                p1view.RPC("DrawCard", RpcTarget.All);
+            }
+                
+        }
+
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();     
             if(p1) p1.IsRegistered = false;
             if(p2) p2.IsRegistered = false;       
             UpdatePlayerPanel();
+        }
+
+        public void Execute()
+        {
+            if (p1view == null) 
+            {
+                Debug.Log("ERROR: p1view is null"); 
+                return;
+            }
+            if (p1 == null)
+            {
+                Debug.Log("ERROR: p1 is null");
+                return;
+            }
+            if (p2 == null)
+            {
+                Debug.Log("ERROR: p2view is null");
+                return;
+            }
+            p1view.RPC("Execute", RpcTarget.All);
         }
 
         public void Register(Programmer _prog)

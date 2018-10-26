@@ -33,4 +33,10 @@ MonoBehaviour:
   - RespawnSpaceship
   - UpdateProgram
   - GenerateHand
+  - AddCard
+  - ReplaceCard
+  - Execute
+  - Modifiy
+  - Modify
+  - DrawCard
   DisableAutoOpenWizard: 1
