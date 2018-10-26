@@ -7,8 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'BattleScript') }}</title>
-
+    <!-- <title>{{ config('app.name', 'BattleScript') }}</title> -->
+    <title>@yield('pageTitle') BattleScript</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
