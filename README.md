@@ -37,3 +37,28 @@ Unity:
 4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder. 
 5. When building the game to debug, create a folder called Debug. the path should be BattleScript/game/BattleScripts/Debug
 6. The .gitignore file has been configured to ignore Debug folder.
+
+Local Database:
+1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
+2. Go to xampp/phpMyAdmin/config.inc.php
+3. under /*Authentication type and info*/ 
+	$cfg['Servers'][$i]['auth_type'] = 'cookie';
+	$cfg['Servers'][$i]['user'] = 'root';
+	$cfg['Servers'][$i]['password'] = '123456';
+	$cfg['Servers'][$i]['extension'] = 'mysqli';
+	$cfg['Servers'][$i]['AllowNoPassword'] = true;
+	$cfg['Lang'] = '';
+	confirm that you have the above setting.
+4. In XAMPP Control Panel start MySql
+5. In your browser type in localhost:8000/phpmyadmin
+6. Login with the above "username" and "password"
+7. On the most left side of the navigation bar click on Database
+8. Create a new database "battlescript" *you do not need to create any table
+9. Under /www/ directory open the ".env" file in a text editor and set the following(should be in line 12-14): 
+	DB_DATABASE=battlescript
+	DB_USERNAME=root
+	DB_PASSWORD=123456
+9. In the same directory "/www/" open a terminal and run "php artisan migrate"
+10. refresh your browser and go in to your database
+	"battlescript". You should see 3 tables "migrations", "password_resets", "users".
+11. You should now be able to register a user and login with it, or alternatively create a user in the database and login form the web.
