@@ -171,7 +171,7 @@ namespace BattleScripts
 				pField += amount;
 				if (pField < overflow) 
 				{
-					Bugs++;
+					this.Bugs++;
 				}
 			}
 			else
@@ -179,7 +179,7 @@ namespace BattleScripts
 				pField -= amount;
 				if (pField > amount)
 				{
-					Bugs++;
+					this.Bugs++;
 				}
 			}
 		}
@@ -216,8 +216,11 @@ namespace BattleScripts
 		}
 
 		/// <summary>
-		/// Used to excute a player's program
-		/// Deletes Program Afterwards
+		/// Used to excute a player's program.
+		/// 
+		/// Will consume 10 Bar per execution.
+		///
+		/// Deletes Program Afterwards.
 		/// </summary>
 		[PunRPC]
 		public void Execute()
@@ -226,6 +229,7 @@ namespace BattleScripts
 			foreach (Code c in Program)
 			{
 				c.Execute(GameManager.Instance.p1, GameManager.Instance.p2);
+				Bar -= 16;
 			}
 			Program = new List<Code>();
 		}

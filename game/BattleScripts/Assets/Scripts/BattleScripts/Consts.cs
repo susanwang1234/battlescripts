@@ -14,6 +14,10 @@ namespace BattleScripts
 		public const int MAX_CARDS_IN_HAND = 5;
 		#endregion
 
+		#region Constant Values
+		
+		#endregion
+
 		#region Start Values
 		public const byte START_FOO_POINTS = 127;
 		public const byte START_BAR_POINTS = 127;
@@ -22,37 +26,40 @@ namespace BattleScripts
 		#endregion
 
 		#region Code Descriptions
-		public const string CODE_DESC_1 = "0. p1.Foo += 16;";
-		public const string CODE_DESC_2 = "1. p2.Foo -= 16;";
-		public const string CODE_DESC_3 = "2. p1.Bar += 16;";
-		public const string CODE_DESC_4 = "3. p2.Bar -= 16;";
-		public const string CODE_DESC_5 = "if (p1.Foo < p2.Foo)\n\tswap(p1.Foo, p2.Foo);";
+		public const string CODE_DESC_1 = "p1.Foo += 16;";
+		public const string CODE_DESC_2 = "p2.Foo -= 16;";
+		public const string CODE_DESC_3 = "p1.Bar += 16;";
+		public const string CODE_DESC_4 = "p2.Bar -= 16;";
 		#endregion
 
 		#region Code Functions
 		
 		private static void ACTION_1(Programmer p1, Programmer p2)
 		{
-			byte mod = 16;
-			p1.photonView.RPC("Modify", RpcTarget.All, p1.Foo, mod, true);
+			byte overflow = p1.Foo;
+			p1.Foo += 16;
+			if (overflow > p1.Foo) p1.Bugs++;
 		}
 
 		private static void ACTION_2(Programmer p1, Programmer p2)
 		{
-			byte mod = 16;
-			p2.photonView.RPC("Modify", RpcTarget.All, p1.Foo, mod, false);
+			byte overflow = p2.Foo;
+			p2.Foo -= 16;
+			if (overflow < p2.Foo) p2.Bugs++;
 		}
 
 		private static void ACTION_3(Programmer p1, Programmer p2)
 		{
-			byte mod = 16;
-			p1.photonView.RPC("Modify", RpcTarget.All, p1.Bar, mod, true);
+			byte overflow = p1.Bar;
+			p1.Bar += 16;
+			if (overflow > p1.Bar) p1.Bugs++;
 		}
 
 		private static void ACTION_4(Programmer p1, Programmer p2)
 		{
-			byte mod = 16;
-			p2.photonView.RPC("Modify", RpcTarget.All, p2.Bar, mod, false);
+			byte overflow = p2.Bar;
+			p2.Bar -= 16;
+			if (overflow < p2.Bar) p2.Bugs++;
 		}
 
 		#endregion

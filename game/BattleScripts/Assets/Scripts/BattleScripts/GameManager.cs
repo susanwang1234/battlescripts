@@ -11,36 +11,78 @@ using Photon.Realtime;
 
 namespace BattleScripts
 {
+    /// <summary>
+    /// This class is used for managing the game.
+    /// 
+    /// Contains references to other players in the game
+    ///
+    /// Will display Programmer stats onto the screen using Unity Text GameObject
+    ///
+    /// Connects Inputs from users via buttons and send Photon RPC (Remote Procedure Calls) to players
+    ///
+    /// This allows players to execute RPC functions locally.
+    ///
+    /// There will be 2 instances of the GameManager in a 2 player room
+    ///
+    /// Each Player that is locally controlled will be considered as player 1 on thier client
+    /// </summary>
     public class GameManager : MonoBehaviourPunCallbacks
     {
 
         #region Private Fields
+        /// <summary>
+        /// The PhotonView for Player 1
+        /// It is used to invoke RPC on player 1
+        /// There is no need for a reference to Player 2 PhotonView
+        /// There will be another GameManager which the Player 2 will be registered as player 1
+        /// </summary>
         [SerializeField]
         PhotonView p1view;
         #endregion
 
         #region Public Fields
-        
+        /// <summary>
+        /// Static instance of the GameManager
+        /// 
+        /// Can be referred to as GameManager.Instance
+        /// 
+        /// Will not need to call a constructor for the GameManager
+        /// </summary>
         public static GameManager Instance;
 
-        [Tooltip("The Prefab used for representing the player")]
+        [Tooltip("The prefab used for representing the player")]
         public GameObject playerPrefab;
-        [Tooltip("The P used for representing the player UI")]
+        [Tooltip("The panel used for representing the player UI")]
         public GameObject playerUI;
+        [Tooltip("Leave this blank, should be filled when loaded into Room for 1 or Room for 2")]
         public Programmer p1;
+        [Tooltip("Leave this blank, should be filled when loaded into Room for 2")]
         public Programmer p2;
+        [Tooltip("Text object to display player 1 name")]
         public Text p1Name;
+        [Tooltip("Text object to display player 1 foo")]
         public Text p1Foo;
+        [Tooltip("Text object to display player 1 bar")]
         public Text p1Bar;
+        [Tooltip("Text object to display player 1 bugs")]
         public Text p1Bugs;
+        [Tooltip("Text object to display player 1 program")]
         public Text p1Screen;
+        [Tooltip("An array of button GameObjects to be used as player 1 cards")]
         public GameObject[] p1Cards = new GameObject[5];
+        [Tooltip("A button gameobject to link to Execute Call")]
         public GameObject ExeGameObj;
+        [Tooltip("A button gameobject to link to the Draw Card Call")]
         public GameObject DrawCardObj;
+        [Tooltip("Text Object to display player 2 name")]
         public Text p2Name;
+        [Tooltip("Text Object to display player 2 foo")]
         public Text p2Foo;
+        [Tooltip("Text Object to display player 2 bar")]
         public Text p2Bar;
+        [Tooltip("Text Object to display player 2 bugs")]
         public Text p2Bugs;
+        [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
     
         #endregion
@@ -113,7 +155,9 @@ namespace BattleScripts
         #endregion
 
         #region Private Methods
-
+        /// <summary>
+        /// Updates PlayerPanel every frome.
+        /// </summary>
         void UpdatePlayerPanel()
         {
             if (p1 != null)
@@ -140,6 +184,7 @@ namespace BattleScripts
                 p2Bugs.text = p2.GetBugText();
                 p2Screen.text = p2.PrintScreen();                
                 if (ExeGameObj != null ) ExeGameObj.SetActive(true);
+
             }
             else 
             {
@@ -165,6 +210,7 @@ namespace BattleScripts
                 {
                     p1Cards[i].SetActive(false);
                 }
+                DrawCardObj.SetActive(false);
                 return;
             }
             if (p1.Hand == null)
@@ -183,7 +229,7 @@ namespace BattleScripts
                     p1Cards[i].SetActive(false);
                 }
             }
-            DrawCardObj.SetActive(p1.Hand.Count < Consts.MAX_CARDS_IN_HAND && p2 != null);
+            DrawCardObj.SetActive(p1.Hand.Count < Consts.MAX_CARDS_IN_HAND );
         }        
 
         /// <summary>
@@ -203,7 +249,8 @@ namespace BattleScripts
 
         #region Public Methods
         /// <summary>
-        /// Adds card at position I of hand to program
+        /// Adds card at position i of hand to program
+        ///
         /// Then generates a new card in that position
         /// </summary>
         public void AddCard(int num)
@@ -231,7 +278,7 @@ namespace BattleScripts
 
         /// <summary>
         /// Forces player to leave the game
-        /// - Unregisters players
+        /// - Will also Unregisters all players registered to the GameManager
         /// </summary>
         public void LeaveRoom()
         {
@@ -241,6 +288,12 @@ namespace BattleScripts
             UpdatePlayerPanel();
         }
 
+
+        /// <summary>
+        /// Link this function to the ExeGameObj.
+        ///
+        /// Will call the player's execute function.
+        /// </summary>
         public void Execute()
         {
             if (p1view == null) 
@@ -261,6 +314,11 @@ namespace BattleScripts
             p1view.RPC("Execute", RpcTarget.All);
         }
 
+        /// <summary>
+        /// Used to register players to the game manager.
+        ///
+        /// Allows players to refer to each other via GameManager.Instance.p1 or GameManager.Instance.p2
+        ///</summary>
         public void Register(Programmer _prog)
         {
             if (p1 == null) 
