@@ -5,23 +5,30 @@ using Photon.Pun;
 
 namespace BattleScripts
 {
-	public class Programmer : MonoBehaviourPunCallbacks, IPunObservable {
+	public class Programmer : MonoBehaviourPunCallbacks {
 
 		#region Private Fields
-		int replaceIndex;
-		bool replace = false;
 		#endregion
 
 		#region Public Fields
 		
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;		
+		[Tooltip("Leave this blank, will be linked to RNG class during runtime")]
 		public RNG rng;
 		/// <summary>
+		/// List of Code that will be executed when executed is called
+		/// 
+		/// Consumes Bar for each code executed
 		/// </summary>		
 		public List<Code> Program = null;
 		
 		/// <summary>
+		/// List of Code that the Player can select to add to its program
+		/// 
+		/// Will be empty on Game Start and needs to be drawn one at a time to ensure network has time to sync
+		/// 
+		/// Will replace card added to Program automatically
 		/// </summary>
 		public List<Code> Hand = null;
 		
@@ -51,8 +58,14 @@ namespace BattleScripts
 		[Tooltip("Programmer's bug count")]
 		public byte Bugs;
 
+		/// <summary>
+		/// Checks to see if the programmer is registered with Game Manager
+		/// </summary>
 		public bool IsRegistered;
 
+		/// <summary>
+		///	Checks to see if it is this player's turn
+		/// </summary>
 		public bool Turn;
 
 		#endregion
@@ -74,7 +87,6 @@ namespace BattleScripts
 			}			
 			return screen;
 		}
-
 		public string GetName()
 		{
 			return photonView.Owner.NickName;
@@ -94,7 +106,6 @@ namespace BattleScripts
 		{
 			return "Bug : " + Bugs.ToString();
 		}		
-
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -137,16 +148,7 @@ namespace BattleScripts
 			if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
 			{
 				return;
-			}			
-			if (Hand != null)
-			{			
-				if (replace)
-				{
-					photonView.RPC("ReplaceCard", RpcTarget.All, replaceIndex);
-					rng.Randomize();					
-					replace = false;
-				}				
-			}							
+			}								
 		}
 
 		void CalledOnLevelWasLoaded(int level)
@@ -162,28 +164,9 @@ namespace BattleScripts
 		
 		#region PunRPC Public Methods
 
-		[PunRPC]
-		public void Modify(byte pField, byte amount, bool add)
-		{
-			byte overflow = pField;
-			if (add) 
-			{
-				pField += amount;
-				if (pField < overflow) 
-				{
-					this.Bugs++;
-				}
-			}
-			else
-			{
-				pField -= amount;
-				if (pField > amount)
-				{
-					this.Bugs++;
-				}
-			}
-		}
-
+		/// <summary>
+		/// Called by GameManager to Draw Card 
+		/// </summary>
 		[PunRPC]
 		public void DrawCard()
 		{
@@ -191,12 +174,13 @@ namespace BattleScripts
 			rng.Randomize();
 		}
 
-		[PunRPC]
-		public void ReplaceCard(int i)
-		{
-			Hand[i] = Consts.CodeList[rng.RandVal];
-		}
-
+		/// <summary>
+		/// Will generate Program if it doesn't exist
+		/// 
+		/// Adds the ith card in your hand to the program
+		///
+		/// Will replace the card automatically
+		/// </summary>
 		[PunRPC]
 		public void UpdateProgram(int i)
 		{
@@ -205,10 +189,12 @@ namespace BattleScripts
 				Program = new List<Code>();
 			}
 			Program.Add(Hand[i]);
-			replaceIndex = i;
-			replace = true;
+			Hand[i] = Consts.CodeList[rng.RandVal];
+			rng.Randomize();					
 		}
-
+		/// <summary>
+		/// Generates Hand
+		/// </summary>
 		[PunRPC]
 		public void GenerateHand()
 		{
@@ -233,36 +219,6 @@ namespace BattleScripts
 			}
 			Program = new List<Code>();
 		}
-		#endregion
-
-		#region IPunObservable implementation
-
-		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-		{
-			// if (stream.IsWriting)
-			// {
-			// 	// We own this player: send the others our data
-			// 	stream.SendNext(Foo);
-			// 	stream.SendNext(Bar);
-			// 	stream.SendNext(Bugs);
-			// 	stream.SendNext(IsRegistered);
-			// 	stream.SendNext(Turn);
-			// 	stream.SendNext(Program);
-			// 	stream.SendNext(Hand);
-			// }
-			// else
-			// {
-			// 	// Network player, receive data
-			// 	this.Foo = (byte)stream.ReceiveNext();
-			// 	this.Bar = (byte)stream.ReceiveNext();
-			// 	this.Bugs = (byte)stream.ReceiveNext();
-			// 	this.IsRegistered = (bool)stream.ReceiveNext();
-			// 	this.Turn = (bool)stream.ReceiveNext();
-			// 	this.Program = (List<Code>)stream.ReceiveNext();
-			// 	this.Hand = (List<Code>)stream.ReceiveNext();
-			// }
-		}
-
-		#endregion
+		#endregion		
 	}
 }
