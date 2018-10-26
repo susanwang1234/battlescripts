@@ -7,7 +7,6 @@ namespace BattleScripts
 {
 	/// <summary>
 	/// Random Number Generator used to generate a random number.
-	/// - Contains a public field Randval which is synchronized by PhotonView 
 	/// </summary>
 	public class RNG : MonoBehaviourPunCallbacks, IPunObservable {
 		#region Private Fields
@@ -18,34 +17,24 @@ namespace BattleScripts
 		int randVal = 0;
 		#endregion
 
-		#region Public Fields
-		/// <summary>
-		/// Public getter of randval
-		/// </summary>
-		public int RandVal 
-		{
-			get {				
-				return randVal;
-			}
-		}
-
-		#endregion
-
 		#region Public Methods
 		/// <summary>
 		/// Used to generate a random value
 		///
 		/// Only the owner of the photonView will generate a new random value
 		///
-		/// Other clients will just sync with current value
+		/// Returns old random value
 		/// </summary>
-		public void Randomize()
+		public int GetRandomInt()
 		{
+			int cache = randVal;	// old random value to return later
 			if (photonView.IsMine)
 			{
 				randVal = Random.Range(0,Consts.CodeList.Count);
 			}
+			return cache;
 		}
+
 		#endregion
 
 		#region IPunObservable implementation

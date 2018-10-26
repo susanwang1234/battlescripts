@@ -106,6 +106,27 @@ namespace BattleScripts
 		{
 			return "Bug : " + Bugs.ToString();
 		}		
+
+		/// <summary>
+		/// Used to excute a player's program.
+		/// 
+		/// Will consume 10 Bar per execution.
+		///
+		/// Deletes Program Afterwards.
+		public void Execute(Programmer p1, Programmer p2)
+		{
+			if (Program == null) return;
+			byte overflow;
+			foreach (Code c in Program)
+			{				
+				c.Execute(p1, p2);				
+				overflow = Bar;
+				Bar -= 16;
+				if (overflow < Bar) Bugs++;
+			}
+			Program = new List<Code>();
+		}
+
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -170,8 +191,7 @@ namespace BattleScripts
 		[PunRPC]
 		public void DrawCard()
 		{
-			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) Hand.Add(Consts.CodeList[rng.RandVal]);
-			rng.Randomize();
+			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) Hand.Add(Consts.CodeList[rng.GetRandomInt()]);
 		}
 
 		/// <summary>
@@ -189,8 +209,7 @@ namespace BattleScripts
 				Program = new List<Code>();
 			}
 			Program.Add(Hand[i]);
-			Hand[i] = Consts.CodeList[rng.RandVal];
-			rng.Randomize();					
+			Hand[i] = Consts.CodeList[rng.GetRandomInt()];
 		}
 		/// <summary>
 		/// Generates Hand
@@ -202,22 +221,13 @@ namespace BattleScripts
 		}
 
 		/// <summary>
-		/// Used to excute a player's program.
-		/// 
-		/// Will consume 10 Bar per execution.
-		///
-		/// Deletes Program Afterwards.
+		/// RPC Call of Execute
 		/// </summary>
 		[PunRPC]
-		public void Execute()
+		public void RpcExecute()
 		{
-			if (Program == null) return;
-			foreach (Code c in Program)
-			{
-				c.Execute(GameManager.Instance.p1, GameManager.Instance.p2);
-				Bar -= 16;
-			}
-			Program = new List<Code>();
+			// #critical need to switch p1 and p2 around to because game manager has different p1
+			Execute(GameManager.Instance.p2, GameManager.Instance.p1);
 		}
 		#endregion		
 	}

@@ -32,8 +32,11 @@ namespace BattleScripts
         #region Private Fields
         /// <summary>
         /// The PhotonView for Player 1
+        ///
         /// It is used to invoke RPC on player 1
+        ///
         /// There is no need for a reference to Player 2 PhotonView
+        ///
         /// There will be another GameManager which the Player 2 will be registered as player 1
         /// </summary>
         [SerializeField]
@@ -311,7 +314,8 @@ namespace BattleScripts
                 Debug.Log("ERROR: p2view is null");
                 return;
             }
-            p1view.RPC("Execute", RpcTarget.All);
+            p1.Execute(p1, p2);
+            p1view.RPC("RpcExecute", RpcTarget.Others);
         }
 
         /// <summary>
