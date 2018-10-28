@@ -18,5 +18,6 @@
 **/Temp/
 **/db.lock
 **/.vs/
+**/.vscode/
 **/*.sln
 **/*.csproj

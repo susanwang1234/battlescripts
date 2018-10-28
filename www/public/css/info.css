@@ -1,0 +1,63 @@
+h1{
+    font-size: 70px;
+    font-variant: small-caps;
+    font-family: 'VT323', monospace;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 100;
+    font-family: 'Lato', sans-serif;
+}
+ul.list {
+    font-size: 20px;
+    font-weight: 100;
+    font-family: 'Lato', sans-serif;
+    text-align: justify;
+}
+.textbox{
+    background-image: URL("/images/bg.jpg");
+    text-align: justify;
+    margin: 80px;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px solid #39ff14;
+}
+.tips{
+    background-image: URL("/images/bg.jpg");
+    text-align: justify;
+    margin: 80px;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px solid #39ff14;
+}
+
+.group {
+  background-image: URL("/images/button.png");
+  box-shadow: 0 0 3px 3px #162822 inset;
+  width: 450px;
+  margin: 0 auto;
+  position: relative;
+}
+.item {
+  display: inline-block;
+
+}
+.item a {
+  display: inline-block;
+  color: white;
+  padding: 10px 20px 10px 20px;
+  font-size: 12pt;
+  font-family: 'Lato', sans-serif;
+}
+
+.item a:hover {
+  background-color: #ffa100;
+  color: white;
+  text-decoration: none;
+}
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

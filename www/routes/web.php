@@ -15,6 +15,20 @@ Route::get('/', function () {
     return view('home');
 });
 
-Auth::routes();
 
+Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/tutorial', function () {
+    return view('tutorial');
+});
+Route::get('/about', function () {
+    return view('about');
+});
+Route::get('/start', function () {
+    return view('start');
+});
+Route::group(['middleware' => ['auth', 'user']], function() {
+
+    Route::get('/unity', 'unity@index')->name('unity');
+});

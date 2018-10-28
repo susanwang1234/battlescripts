@@ -9,18 +9,18 @@ The 'www' folder contains the Laravel web framework files
 
 # Install Guide
 
-(Note: Highly recommend not downloading Apache and PHP separately. Huge pain in the ass. 
+(Note: Highly recommend not downloading Apache and PHP separately. Huge pain in the ass.
 Use something like XAMMP or WAMP that packages the entire stack for you pre-configured)
 
 Laravel:
 1. You need to download Composer online, and through it, install Laravel. Detailed installation guide found at https://laravel.com/docs/4.2/installation#configuration
-2. For local development, it is recommended that you run "php artisan serve" in the root directory. 
+2. For local development, it is recommended that you run "php artisan serve" in the root directory.
 The website will be accessible from localhost:8000
 
-(Highly recommend not downloading these manually. 
+(Highly recommend not downloading these manually.
 We can consider doing these individually for production but I really don't think that would be the best idea)
 PHP:
-1. When installing PHP manually, saw some things online about 
+1. When installing PHP manually, saw some things online about
 needing to download the "thread safe" versions when working with Apache
 
 Apache:
@@ -31,9 +31,45 @@ Apache:
 5. Laravel uses some OpenSSL module and it needs to be configured somewhere in either httpd.conf or php.ini? Couldn't resolve
 
 Unity:
-1. For Unity installation, here is the link https://unity3d.com/get-unity/download. 
-2. The game is accessible under BattleScript/game/BattleScripts/Assets/_Scenes. 
-3. The .unity files are the game scenes, which are what the Unity editor opens and allows to be edited. 
-4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder. 
+1. For Unity installation, here is the link https://unity3d.com/get-unity/download.
+2. The game is accessible under BattleScript/game/BattleScripts/Assets/_Scenes.
+3. The .unity files are the game scenes, which are what the Unity editor opens and allows to be edited.
+4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder.
 5. When building the game to debug, create a folder called Debug. the path should be BattleScript/game/BattleScripts/Debug
 6. The .gitignore file has been configured to ignore Debug folder.
+
+Local Database:
+1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
+2. Go to xampp/phpMyAdmin/config.inc.php
+3. under /*Authentication type and info*/
+	- $cfg['Servers'][$i]['auth_type'] = 'cookie';
+	- $cfg['Servers'][$i]['user'] = 'root';
+	- $cfg['Servers'][$i]['password'] = '123456';
+	- $cfg['Servers'][$i]['extension'] = 'mysqli';
+	- $cfg['Servers'][$i]['AllowNoPassword'] = true;
+	- $cfg['Lang'] = '';
+
+confirm that you have the above setting.
+4. In XAMPP Control Panel start MySql
+5. In your browser type in localhost:8000/phpmyadmin
+6. Login with the above "username" and "password"
+7. On the most left side of the navigation bar click on Database
+8. Create a new database "battlescript" *you do not need to create any table
+9. Under /www/ directory open the ".env" file in a text editor and set the following(should be in line 12-14):
+	- DB_DATABASE=battlescript
+	- DB_USERNAME=root
+	- DB_PASSWORD=123456
+9. In the same directory "/www/" open a terminal and run "php artisan migrate"
+10. refresh your browser and go in to your database
+	"battlescript". You should see 3 tables "migrations", "password_resets", "users".
+11. You should now be able to register a user and login with it, or alternatively create a user in the database and login form the web.
+
+Access Routes:
+1. About, Tutorial, and Getting Started pages are accessible by all users through connected routes or via page links.  
+Routes:
+	- localhost:8000/about
+	- localhost:8000/tutorial
+	- localhost:8000/start
+2. Play Game link has been configured so users can only access the game after the user has logged in. If user is already logged in, they will be after to obtain access to the game, otherwise, they will be directed to the login screen.  
+Route(after logging in):
+	- localhost:8000/unity
