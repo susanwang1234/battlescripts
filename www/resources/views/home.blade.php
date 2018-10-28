@@ -16,7 +16,7 @@
 	<ul>
 		<li><a class="active" href="/about">ABOUT</a></li>
 		<li><a href="/tutorial">GAME GUIDE</a></li>
-		<li><a id="navPlayButton" href="/">PLAY NOW</a></li>
+		<li><a id="navPlayButton" href="/unity">PLAY NOW</a></li>
 	</ul>
 </div>
 @endsection
