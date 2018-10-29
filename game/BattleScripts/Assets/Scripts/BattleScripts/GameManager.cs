@@ -176,17 +176,21 @@ namespace BattleScripts
                     {                        
                         int t1 = p1.rng.GetRandomInt();
                         int t2 = p2.rng.GetRandomInt(); 
+                        Debug.Log("T1="+t1.ToString());
+                        Debug.Log("T2="+t2.ToString());
                         if (t1 > t2)
                         {
                             p1.Turn = true;
                             p2.Turn = false;
                             gState = GameState.P1_TURN;
+                            Debug.Log("Player 1 Turn");
                         }
                         else if (t2 > t1) 
                         {
                             p1.Turn = false;
                             p2.Turn = true;
                             gState = GameState.P2_TURN;
+                            Debug.Log("Player 2 Turn");
                         }
                         else
                         {
@@ -261,7 +265,6 @@ namespace BattleScripts
                 p2Bugs.text = p2.GetBugText();
                 p2Screen.text = p2.PrintScreen();                
                 if (ExeGameObj != null ) ExeGameObj.SetActive(true);
-
             }
             else 
             {
