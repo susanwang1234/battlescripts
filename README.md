@@ -73,3 +73,10 @@ Routes:
 2. Play Game link has been configured so users can only access the game after the user has logged in. If user is already logged in, they will be after to obtain access to the game, otherwise, they will be directed to the login screen.  
 Route(after logging in):
 	- localhost:8000/unity
+
+Release Build of Game
+1. To build a production version of the game, you'll need to go to Unity and build a NON-DEVELOPEMENT build into a Release directory in game/BattleScripts/
+2. It is possible to test the game without starting the server by just opening the index.html page in the Release directory
+3. The next step is to replace the Build folder at "www/public/game/" with the one in  "game/BattleScripts/Release/"
+4. To make changes to the styles, edit the style.css in the "www/public/game/TemplateData"
+5. Changing the .html file will do nothing to the actual view, to make changes to the view on the site, modify the unity.blade.php file in www/resources/views
