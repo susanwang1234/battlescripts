@@ -30,14 +30,6 @@ Apache:
 4. Find LoadModule in httpd.conf and add "LoadModule php7_module C:/php/php7apache2_4.dll" (or wherever you installed php)
 5. Laravel uses some OpenSSL module and it needs to be configured somewhere in either httpd.conf or php.ini? Couldn't resolve
 
-Unity:
-1. For Unity installation, here is the link https://unity3d.com/get-unity/download.
-2. The game is accessible under BattleScript/game/BattleScripts/Assets/_Scenes.
-3. The .unity files are the game scenes, which are what the Unity editor opens and allows to be edited.
-4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder.
-5. When building the game to debug, create a folder called Debug. the path should be BattleScript/game/BattleScripts/Debug
-6. The .gitignore file has been configured to ignore Debug folder.
-
 Local Database:
 1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
 2. Go to xampp/phpMyAdmin/config.inc.php
@@ -74,7 +66,17 @@ Routes:
 Route(after logging in):
 	- localhost:8000/unity
 
-Release Build of Game
+# Unity Guide
+
+Unity Primer:
+1. For Unity installation, here is the link https://unity3d.com/get-unity/download.
+2. The game is accessible under BattleScript/game/BattleScripts/Assets/_Scenes.
+3. The .unity files are the game scenes, which are what the Unity editor opens and allows to be edited.
+4. For our game networking, we are using Photon v2. When cloning the branch, if should be under the Assets folder.
+5. When building the game to debug, create a folder called Debug. the path should be BattleScript/game/BattleScripts/Debug
+6. The .gitignore file has been configured to ignore Debug folder.
+
+Updating Release Build :
 1. To build a production version of the game, you'll need to go to Unity and build a NON-DEVELOPEMENT build into a Release directory in game/BattleScripts/
 2. It is possible to test the game without starting the server by just opening the index.html page in the Release directory
 3. The next step is to replace the Build folder at "www/public/game/" with the one in  "game/BattleScripts/Release/"
