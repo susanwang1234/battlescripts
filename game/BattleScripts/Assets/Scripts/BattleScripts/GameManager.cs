@@ -188,6 +188,10 @@ namespace BattleScripts
                             p2.Turn = true;
                             gState = GameState.P2_TURN;
                         }
+                        else
+                        {
+                            Debug.Log("Deciding on who's turn it is...");
+                        }
                     }                        
                     break;
                 case GameState.P1_TURN:
@@ -224,9 +228,14 @@ namespace BattleScripts
         /// </summary>
         void UpdatePlayerPanel()
         {
+            string turn = " -> (Turn)";
             if (p1 != null)
             {
                 p1Name.text = p1.GetName();
+                if (gState == GameState.P1_TURN)
+                {
+                    p1Name.text += turn;
+                }
                 p1Foo.text = p1.GetFooText();
                 p1Bar.text = p1.GetBarText();
                 p1Bugs.text = p1.GetBugText();
@@ -243,6 +252,10 @@ namespace BattleScripts
             if (p2 != null)
             {
                 p2Name.text = p2.GetName();
+                if (gState == GameState.P2_TURN)
+                {
+                    p2Name.text += turn;
+                }
                 p2Foo.text = p2.GetFooText();
                 p2Bar.text = p2.GetBarText();
                 p2Bugs.text = p2.GetBugText();
@@ -313,12 +326,14 @@ namespace BattleScripts
 
         #region Public Methods
         /// <summary>
-        /// Adds card at position i of hand to program
+        /// When it is P1's turn. Adds card at position i of hand to program
         ///
         /// Then generates a new card in that position
         /// </summary>
         public void AddCard(int num)
         {
+            // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
+            if (gState != GameState.P1_TURN) return;
             if (num >= Consts.MAX_CARDS_IN_HAND || num < 0)
             {
                 Debug.Log("Add Card was passed an invalid index");
@@ -356,10 +371,12 @@ namespace BattleScripts
         /// <summary>
         /// Link this function to the ExeGameObj.
         ///
-        /// Will call the player's execute function.
+        /// Will call the player's execute function on P1's turn.
         /// </summary>
         public void Execute()
         {
+            // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
+            if (gState != GameState.P1_TURN) return;
             if (p1view == null) 
             {
                 Debug.Log("ERROR: p1view is null"); 
@@ -396,6 +413,7 @@ namespace BattleScripts
                 p2 = _prog;
                 // call this to randomize p1 and p2 random number
                 // will be used later to see who gets to go first
+                // call now to get a random number, and again in update
                 p1.rng.GetRandomInt();
                 p2.rng.GetRandomInt();
             }
