@@ -150,6 +150,7 @@ namespace BattleScripts
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
 			Bugs = Consts.START_BUG_COUNT;
+			Turn = false;
 			#if UNITY_5_4_OR_NEWER
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>

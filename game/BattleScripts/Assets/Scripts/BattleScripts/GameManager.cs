@@ -52,7 +52,19 @@ namespace BattleScripts
         /// Will not need to call a constructor for the GameManager
         /// </summary>
         public static GameManager Instance;
+        public enum GameState {
+            WAITING,
+            P1_TURN,
+            P2_TURN,
+            P1_WIN,
+            P2_WIN            
+        }
 
+        public GameState gState;
+        #endregion
+
+        // use this region to declaser objects that need to be paired in unity
+        #region Unity Objects
         [Tooltip("The prefab used for representing the player")]
         public GameObject playerPrefab;
         [Tooltip("The panel used for representing the player UI")]
@@ -87,8 +99,9 @@ namespace BattleScripts
         public Text p2Bugs;
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
-    
         #endregion
+
+        
 
         #region Photon Callbacks
 
@@ -135,6 +148,7 @@ namespace BattleScripts
         void Start()
         {
             Instance = this;
+            gState = GameState.WAITING;
             UpdatePlayerPanel();
 
             if (Programmer.LocalPlayerInstance == null)
@@ -153,6 +167,53 @@ namespace BattleScripts
         {
             UpdatePlayerPanel();
             ActivateHand();
+            switch (gState)
+            {
+                case GameState.WAITING:
+                    // When both players have joined
+                    // rng determines who goes first
+                    if (p1 != null && p2 != null)
+                    {                        
+                        int t1 = p1.rng.GetRandomInt();
+                        int t2 = p2.rng.GetRandomInt(); 
+                        if (t1 > t2)
+                        {
+                            p1.Turn = true;
+                            p2.Turn = false;
+                            gState = GameState.P1_TURN;
+                        }
+                        else if (t2 > t1) 
+                        {
+                            p1.Turn = false;
+                            p2.Turn = true;
+                            gState = GameState.P2_TURN;
+                        }
+                    }                        
+                    break;
+                case GameState.P1_TURN:
+                    if (!p1.Turn)
+                    {
+                        p2.Turn = true;
+                        gState =GameState.P2_TURN;
+                    }
+                    break;
+                case GameState.P2_TURN:
+                    if (!p2.Turn)
+                    {
+                        p1.Turn = true;
+                        gState =GameState.P1_TURN;
+                    }
+                    break;
+                case GameState.P1_WIN:
+                    // TODO                    
+                    break;
+                case GameState.P2_WIN:
+                    // TODO
+                    break;
+                default:
+                    Debug.Log("ERROR-Unknown Game State : " + gState);
+                    break;
+            }
         }
 
         #endregion
@@ -333,6 +394,10 @@ namespace BattleScripts
             else if (p2 == null && p1 !=_prog) 
             {
                 p2 = _prog;
+                // call this to randomize p1 and p2 random number
+                // will be used later to see who gets to go first
+                p1.rng.GetRandomInt();
+                p2.rng.GetRandomInt();
             }
             else Debug.Log("Theres an error with registering");
             _prog.IsRegistered = true;      
