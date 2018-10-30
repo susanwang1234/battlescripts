@@ -52,7 +52,19 @@ namespace BattleScripts
         /// Will not need to call a constructor for the GameManager
         /// </summary>
         public static GameManager Instance;
+        public enum GameState {
+            WAITING,
+            P1_TURN,
+            P2_TURN,
+            P1_WIN,
+            P2_WIN            
+        }
 
+        public GameState gState;
+        #endregion
+
+        // use this region to declaser objects that need to be paired in unity
+        #region Unity Objects
         [Tooltip("The prefab used for representing the player")]
         public GameObject playerPrefab;
         [Tooltip("The panel used for representing the player UI")]
@@ -87,8 +99,9 @@ namespace BattleScripts
         public Text p2Bugs;
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
-    
         #endregion
+
+        
 
         #region Photon Callbacks
 
@@ -135,6 +148,7 @@ namespace BattleScripts
         void Start()
         {
             Instance = this;
+            gState = GameState.WAITING;
             UpdatePlayerPanel();
 
             if (Programmer.LocalPlayerInstance == null)
@@ -153,6 +167,61 @@ namespace BattleScripts
         {
             UpdatePlayerPanel();
             ActivateHand();
+            switch (gState)
+            {
+                case GameState.WAITING:
+                    // When both players have joined
+                    // rng determines who goes first
+                    if (p1 != null && p2 != null)
+                    {                        
+                        int t1 = p1.rng.GetRandomInt();
+                        int t2 = p2.rng.GetRandomInt(); 
+                        Debug.Log("T1="+t1.ToString());
+                        Debug.Log("T2="+t2.ToString());
+                        if (t1 > t2)
+                        {
+                            p1.Turn = true;
+                            p2.Turn = false;
+                            gState = GameState.P1_TURN;
+                            Debug.Log("Player 1 Turn");
+                        }
+                        else if (t2 > t1) 
+                        {
+                            p1.Turn = false;
+                            p2.Turn = true;
+                            gState = GameState.P2_TURN;
+                            Debug.Log("Player 2 Turn");
+                        }
+                        else
+                        {
+                            Debug.Log("Deciding on who's turn it is...");
+                        }
+                    }                        
+                    break;
+                case GameState.P1_TURN:
+                    if (!p1.Turn)
+                    {
+                        p2.Turn = true;
+                        gState =GameState.P2_TURN;
+                    }
+                    break;
+                case GameState.P2_TURN:
+                    if (!p2.Turn)
+                    {
+                        p1.Turn = true;
+                        gState =GameState.P1_TURN;
+                    }
+                    break;
+                case GameState.P1_WIN:
+                    // TODO                    
+                    break;
+                case GameState.P2_WIN:
+                    // TODO
+                    break;
+                default:
+                    Debug.Log("ERROR-Unknown Game State : " + gState);
+                    break;
+            }
         }
 
         #endregion
@@ -163,9 +232,14 @@ namespace BattleScripts
         /// </summary>
         void UpdatePlayerPanel()
         {
+            string turn = " -> (Turn)";
             if (p1 != null)
             {
                 p1Name.text = p1.GetName();
+                if (gState == GameState.P1_TURN)
+                {
+                    p1Name.text += turn;
+                }
                 p1Foo.text = p1.GetFooText();
                 p1Bar.text = p1.GetBarText();
                 p1Bugs.text = p1.GetBugText();
@@ -182,12 +256,15 @@ namespace BattleScripts
             if (p2 != null)
             {
                 p2Name.text = p2.GetName();
+                if (gState == GameState.P2_TURN)
+                {
+                    p2Name.text += turn;
+                }
                 p2Foo.text = p2.GetFooText();
                 p2Bar.text = p2.GetBarText();
                 p2Bugs.text = p2.GetBugText();
                 p2Screen.text = p2.PrintScreen();                
                 if (ExeGameObj != null ) ExeGameObj.SetActive(true);
-
             }
             else 
             {
@@ -252,12 +329,14 @@ namespace BattleScripts
 
         #region Public Methods
         /// <summary>
-        /// Adds card at position i of hand to program
+        /// When it is P1's turn. Adds card at position i of hand to program
         ///
         /// Then generates a new card in that position
         /// </summary>
         public void AddCard(int num)
         {
+            // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
+            if (gState != GameState.P1_TURN) return;
             if (num >= Consts.MAX_CARDS_IN_HAND || num < 0)
             {
                 Debug.Log("Add Card was passed an invalid index");
@@ -295,10 +374,12 @@ namespace BattleScripts
         /// <summary>
         /// Link this function to the ExeGameObj.
         ///
-        /// Will call the player's execute function.
+        /// Will call the player's execute function on P1's turn.
         /// </summary>
         public void Execute()
         {
+            // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
+            if (gState != GameState.P1_TURN) return;
             if (p1view == null) 
             {
                 Debug.Log("ERROR: p1view is null"); 
@@ -333,6 +414,11 @@ namespace BattleScripts
             else if (p2 == null && p1 !=_prog) 
             {
                 p2 = _prog;
+                // call this to randomize p1 and p2 random number
+                // will be used later to see who gets to go first
+                // call now to get a random number, and again in update
+                p1.rng.GetRandomInt();
+                p2.rng.GetRandomInt();
             }
             else Debug.Log("Theres an error with registering");
             _prog.IsRegistered = true;      

@@ -115,7 +115,7 @@ namespace BattleScripts
 		/// Deletes Program Afterwards.
 		public void Execute(Programmer p1, Programmer p2)
 		{
-			if (Program == null) return;
+			if (Program == null || Program.Count == 0) return;
 			byte overflow;
 			foreach (Code c in Program)
 			{				
@@ -125,6 +125,7 @@ namespace BattleScripts
 				if (overflow < Bar) Bugs++;
 			}
 			Program = new List<Code>();
+			Turn = false;	// places here instead of RPC because RPC version doesn't call self
 		}
 
 		#endregion
@@ -150,6 +151,7 @@ namespace BattleScripts
 			Foo = Consts.START_FOO_POINTS;
 			Bar = Consts.START_BAR_POINTS;
 			Bugs = Consts.START_BUG_COUNT;
+			Turn = false;
 			#if UNITY_5_4_OR_NEWER
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
@@ -210,6 +212,7 @@ namespace BattleScripts
 			}
 			Program.Add(Hand[i]);
 			Hand[i] = Consts.CodeList[rng.GetRandomInt()];
+			Turn = false;	// called on all photonviews, so safe to put here
 		}
 		/// <summary>
 		/// Generates Hand
@@ -227,7 +230,7 @@ namespace BattleScripts
 		public void RpcExecute()
 		{
 			// #critical need to switch p1 and p2 around to because game manager has different p1
-			Execute(GameManager.Instance.p2, GameManager.Instance.p1);
+			Execute(GameManager.Instance.p2, GameManager.Instance.p1);			
 		}
 		#endregion		
 	}
