@@ -48,3 +48,81 @@ h2 {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+{{--new content added by jyw30--}}
+#active {
+	background-color:darkgray;
+}
+
+#activeplay {
+	background-color:red;
+	color:yellow;
+}
+
+.textbox{
+    background-image: URL("/images/bg.jpg");
+    text-align: justify;
+    margin: 80px;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px solid #39ff14;
+}
+
+h1{
+    font-size: 70px;
+    font-variant: small-caps;
+    font-family: 'VT323', monospace;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 100;
+    font-family: 'Lato', sans-serif;
+}
+
+ul.list {
+    font-size: 20px;
+    font-weight: 100;
+    font-family: 'Lato', sans-serif;
+    text-align: justify;
+}
+
+#pos {
+	position: absolute;
+    bottom: 0%;
+	right: 50%;
+}
+
+.review {
+	text-align: center;
+	color: white;
+	font-style: italic;
+	font-family: Arial, sans-serif;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.flex-container .box {
+  width: 50%;
+  margin: 20px;
+  line-height: 50%;
+}
+
+.footer {
+	text-align: center;
+    border-top: 2px black solid;
+    height: 40px;
+}
+
+#footertext {
+	display: inline-block;
+    color: gray;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+
+

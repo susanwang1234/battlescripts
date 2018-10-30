@@ -10,13 +10,42 @@
 	        </div>
 	    </div>
 	</div>
-
 </div>
 <div class=categories style="margin-top:20px">
 	<ul>
-		<li><a class="active" href="/about">ABOUT</a></li>
-		<li><a href="/tutorial">GAME GUIDE</a></li>
+	    <li><a id="active" href="/index.php">HOME</a></li>
+		<li><a href="/about">ABOUT</a></li>
+		<li><a href="/tutorial">TUTORIAL</a></li>
+		<li><a href="/start">GETTING STARTED</a></li>
 		<li><a id="navPlayButton" href="/unity">PLAY NOW</a></li>
 	</ul>
+</div>
+
+<br />
+<div class="flex-container">
+	<div class="box"><img src="/images/engineer.jpg" width="90%"/></div>
+	<div class="box"><h1 style="color:orange;">Defeat your friends in this battle coding simulator!</h1></div>
+</div>
+
+<br />
+<div style="margin:20px">
+	<h2 class="review">This is the most interesting game in 2018!</h2>
+	<h3 class="review">- FakeGameReviews.com</h3>
+	<br/>
+	<h2 class="review">I used to struggle with programming, until I found this game! Now I am an expert!</h2>
+	<h3 class="review">- Anonymous</h3>
+	<br/>
+	<h2 class="review">BattleScripts is a fun and addictive game that can introduce people into coding in a very creative and interesting way!</h2>
+	<h3 class="review">- 1337GameReviews</h3>
+	<br/>
+	<h2 class="review">BattleScripts makes programming fun and taught me to love programming!</h2>
+	<h3 class="review">- A random SFU student.</h3>
+	<br/>
+	<h2 class="review">10/10</h2>
+	<h3 class="review">- 31337CMPTH4X0R Magazine</h3>
+</div>
+
+<div class="footer">
+	<div id="footertext">Team 404 &copy; 2018</div>
 </div>
 @endsection
