@@ -4,6 +4,7 @@ h2 {
 }
 
 .categories {
+	background-color:#1a1a1a;
 	text-align: center;
     border-bottom: 2px black solid;
     height: 40px;
@@ -28,7 +29,7 @@ h2 {
 }
 
 .categories li a:hover {
-    color: white;
+    color: lime;
 }
 
 #navPlayButton {
@@ -51,12 +52,17 @@ h2 {
 
 {{--new content added by jyw30--}}
 #active {
-	background-color:darkgray;
+	background-color:pink;
+	color:brown;
 }
 
 #activeplay {
 	background-color:red;
 	color:yellow;
+}
+
+#navPlayButton:hover{
+	color:red;
 }
 
 .textbox{
@@ -66,6 +72,7 @@ h2 {
     padding: 30px;
     border-radius: 25px;
     border: 3px solid #39ff14;
+	box-shadow: 0px 0px 50px lime;
 }
 
 h1{
@@ -87,11 +94,11 @@ ul.list {
     text-align: justify;
 }
 
-#pos {
+{{--#pos {
 	position: absolute;
+	right: 100%;
     bottom: 0%;
-	right: 50%;
-}
+}--}}
 
 .review {
 	text-align: center;
@@ -112,6 +119,7 @@ ul.list {
 }
 
 .footer {
+	background-color:#1a1a1a;
 	text-align: center;
     border-top: 2px black solid;
     height: 40px;
@@ -122,6 +130,24 @@ ul.list {
     color: gray;
     padding: 8px 16px;
     text-decoration: none;
+}
+
+.content-bg {
+	background-image: URL("/images/binarybg.jpeg");
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+	height:100%;
+}
+
+.textboxhome {
+    background-color: #1a1a1a;
+    text-align: justify;
+    margin: 80px;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px solid #39ff14;
+	box-shadow: 0px 0px 50px lime;
 }
 
 

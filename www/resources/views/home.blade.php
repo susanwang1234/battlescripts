@@ -11,7 +11,9 @@
 	    </div>
 	</div>
 </div>
-<div class=categories style="margin-top:20px">
+
+<div class="content-bg">
+<div class=categories style="margin-top:20px;">
 	<ul>
 	    <li><a id="active" href="/index.php">HOME</a></li>
 		<li><a href="/about">ABOUT</a></li>
@@ -21,10 +23,11 @@
 	</ul>
 </div>
 
+<div class="textboxhome">
 <br />
 <div class="flex-container">
 	<div class="box"><img src="/images/engineer.jpg" width="90%"/></div>
-	<div class="box"><h1 style="color:orange;">Defeat your friends in this battle coding simulator!</h1></div>
+	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow;">Defeat your friends in this battle coding simulator!</h1></div>
 </div>
 
 <br />
@@ -44,8 +47,11 @@
 	<h2 class="review">10/10</h2>
 	<h3 class="review">- 31337CMPTH4X0R Magazine</h3>
 </div>
+</div>
 
 <div class="footer">
 	<div id="footertext">Team 404 &copy; 2018</div>
+</div>
+
 </div>
 @endsection

@@ -13,6 +13,9 @@
 	    </div>
 	</div>
 </div>
+
+<div class="content-bg">
+
 <div class=categories style="margin-top:20px">
 	<ul>
 	    <li><a href="/index.php">HOME</a></li>
@@ -29,6 +32,8 @@
 
 <div class="footer">
 	<div id="footertext">Team 404 &copy; 2018</div>
+</div>
+
 </div>
 
 @endsection

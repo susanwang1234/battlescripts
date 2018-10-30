@@ -13,7 +13,9 @@
 	    </div>
 	</div>
 </div>
-<div class=categories style="margin-top:20px">
+
+<div class="content-bg">
+<div class=categories style="margin-top:20px;">
 	<ul>
 	    <li><a href="/index.php">HOME</a></li>
 		<li><a id="active" href="/about">ABOUT</a></li>
@@ -22,6 +24,7 @@
 		<li><a id="navPlayButton" href="/unity">PLAY NOW</a></li>
 	</ul>
 </div>
+
 <div class="textbox">
 	  <h1>About</h1>
 
@@ -37,6 +40,10 @@
 <div class="footer">
 	<div id="footertext">Team 404 &copy; 2018</div>
 </div>
+</div>
+
+
+
 
 @endsection
 
