@@ -34,7 +34,8 @@ Apache:
 4. Find LoadModule in httpd.conf and add "LoadModule php7_module C:/php/php7apache2_4.dll" (or wherever you installed php)
 5. Laravel uses some OpenSSL module and it needs to be configured somewhere in either httpd.conf or php.ini? Couldn't resolve
 
-Local Database:
+Local Database:  
+good reference link for resetting default password https://stackoverflow.com/questions/24566453/resetting-mysql-root-password-with-xampp-on-localhost
 1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
 2. Go to xampp/phpMyAdmin/config.inc.php
 3. under /*Authentication type and info*/
