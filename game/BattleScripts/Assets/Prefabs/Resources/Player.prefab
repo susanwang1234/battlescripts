@@ -59,6 +59,7 @@ MonoBehaviour:
   Bugs: 0
   IsRegistered: 0
   Turn: 0
+  PlayAgain: 0
 --- !u!114 &114390139356773742
 MonoBehaviour:
   m_ObjectHideFlags: 1
