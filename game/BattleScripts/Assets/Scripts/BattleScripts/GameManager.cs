@@ -141,6 +141,8 @@ namespace BattleScripts
         
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
+
+        public Text TutorialBtnText;
         
         #endregion
 
@@ -535,7 +537,9 @@ namespace BattleScripts
         {
             TutorialOn = !TutorialOn;
             tutorialPanel.SetActive(TutorialOn);
-            playerUI.SetActive(!TutorialOn);   
+            playerUI.SetActive(!TutorialOn);
+            TutorialBtnText.text = (TutorialOn) ? "Hide Tutorial" : "Show Tutorial";
+            
         }
 
         #endregion

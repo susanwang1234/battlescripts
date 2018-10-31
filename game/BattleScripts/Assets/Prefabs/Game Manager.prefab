@@ -52,9 +52,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p1view: {fileID: 0}
+  gState: 0
+  IsSuddenDeath: 0
+  TutorialOn: 0
+  LastBugCount: 0
   playerPrefab: {fileID: 1263998224453988, guid: eed6c23ca1f5a13449dc923cd6eb821b,
     type: 2}
   playerUI: {fileID: 0}
+  tutorialPanel: {fileID: 0}
   p1: {fileID: 0}
   p2: {fileID: 0}
   p1Name: {fileID: 0}
@@ -75,3 +80,4 @@ MonoBehaviour:
   p2Bar: {fileID: 0}
   p2Bugs: {fileID: 0}
   p2Screen: {fileID: 0}
+  TutorialBtnText: {fileID: 0}

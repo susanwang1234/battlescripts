@@ -385,6 +385,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acb4eb4ad6600764fa3ceed800e05005, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &117277694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114572547639389970, guid: acb4eb4ad6600764fa3ceed800e05005,
+    type: 2}
+  m_PrefabInternal: {fileID: 117277693}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!114 &729177615 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
@@ -938,6 +944,11 @@ Prefab:
       propertyPath: DrawCardObj
       value: 
       objectReference: {fileID: 1229611107}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
+      propertyPath: TutorialBtnText
+      value: 
+      objectReference: {fileID: 117277694}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8099014ff4134e4e89678a84cd0d6ff, type: 2}
   m_IsPrefabAsset: 0

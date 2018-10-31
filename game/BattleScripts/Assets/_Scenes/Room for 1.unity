@@ -220,7 +220,7 @@ Prefab:
     - target: {fileID: 224367968297112156, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
         type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 224367968297112156, guid: 81e5bdb9af2c9254da1e6b201f6eba44,
         type: 2}
@@ -635,6 +635,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224504664901780878, guid: acb4eb4ad6600764fa3ceed800e05005,
     type: 2}
   m_PrefabInternal: {fileID: 838700667}
+--- !u!114 &838700669 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114572547639389970, guid: acb4eb4ad6600764fa3ceed800e05005,
+    type: 2}
+  m_PrefabInternal: {fileID: 838700667}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &854828876
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +860,11 @@ Prefab:
       objectReference: {fileID: 195226213}
     - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
         type: 2}
+      propertyPath: tutorialPanel
+      value: 
+      objectReference: {fileID: 790648188}
+    - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
+        type: 2}
       propertyPath: p1Name
       value: 
       objectReference: {fileID: 195226223}
@@ -939,9 +950,9 @@ Prefab:
       objectReference: {fileID: 195226214}
     - target: {fileID: 114760941714308396, guid: c8099014ff4134e4e89678a84cd0d6ff,
         type: 2}
-      propertyPath: tutorialPanel
+      propertyPath: TutorialBtnText
       value: 
-      objectReference: {fileID: 790648188}
+      objectReference: {fileID: 838700669}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8099014ff4134e4e89678a84cd0d6ff, type: 2}
   m_IsPrefabAsset: 0
