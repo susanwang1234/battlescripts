@@ -195,7 +195,7 @@ namespace BattleScripts
             LastBugCount = 0;
             gState = GameState.WAITING;
             TutorialOn = false;
-            if (tutorialPanel == null)
+            if (tutorialPanel == null )
             {
                 Debug.Log("ERROR - Tutorial Panel not attached to GameManager");
             }
@@ -222,7 +222,7 @@ namespace BattleScripts
         {
             UpdatePlayerPanel();
             ActivateHand();
-            if (p1.Bugs >= 3 && p2.Bugs >= 3) IsSuddenDeath = true;
+            if (p2 && p1.Bugs >= 3 && p2.Bugs >= 3) IsSuddenDeath = true;
             CheckPlayerWin();
             switch (gState)
             {
@@ -296,6 +296,7 @@ namespace BattleScripts
         /// </summary>
         void CheckPlayerWin()
         {
+            if (!p2) return;
             if (p1.Bugs >= 3 && p1.Bugs > p2.Bugs)
             {
                 gState = GameState.P2_WIN;
