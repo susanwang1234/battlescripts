@@ -30,12 +30,23 @@ namespace BattleScripts
     {
 
         #region Enums
-        public enum GameState {
+        public enum GameState 
+        {
             WAITING,
             P1_TURN,
             P2_TURN,
             P1_WIN,
-            P2_WIN            
+            P2_WIN,     
+            GAME_OVER
+        }
+
+        public enum PanelOn
+        {
+            TUTORIAL,
+            GAME_ON,
+            GAME_OVER,
+            NONE
+
         }
 
         #endregion
@@ -67,7 +78,17 @@ namespace BattleScripts
         /// <summary>
         /// Use to check the game state
         /// </summary>
-        public GameState gState;
+        public GameState gameState;
+
+        /// <summary>
+        /// Used to check which panel should be active
+        /// </summary>
+        public PanelOn ActivePanel = PanelOn.NONE;
+
+        /// <summary>
+        /// Last Panel that was activated
+        /// </summary>
+        public PanelOn LastPanel= PanelOn.NONE;
 
         /// <summary>
         /// If true, next bug will cause that player to lose
@@ -76,26 +97,33 @@ namespace BattleScripts
         /// TODO:
         /// When true, show in game view
         /// </summary>
-        public bool IsSuddenDeath;
-
-        public bool TutorialOn;
+        public bool IsSuddenDeath;        
 
         /// <summary>
-        /// When IsSuddenDeath is true, this will be set to the number of bugs both players ahve
+        /// Winner of the game
         /// </summary>
-        public int LastBugCount;
+        public Programmer Winner;
+
+
         #endregion
 
         // use this region to declaser objects that need to be paired in unity
         #region Unity Objects
+
         [Tooltip("The prefab used for representing the player")]
-        public GameObject playerPrefab;
+        public GameObject PlayerPrefab;
         
         [Tooltip("The panel used for representing the player UI")]
-        public GameObject playerUI;
+        public GameObject PlayerUI;
 
         [Tooltip("The panel used to show tutorial page")]
-        public GameObject tutorialPanel;
+        public GameObject TutorialPanel;
+
+        [Tooltip("The panel used to show end game page")]
+        public GameObject GameEndPanel;
+
+        [Tooltip("The Text to show after game is over")]
+        public Text GameOverText;
 
         [Tooltip("Leave this blank, should be filled when loaded into Room for 1 or Room for 2")]
         public Programmer p1;
@@ -145,9 +173,7 @@ namespace BattleScripts
         public Text TutorialBtnText;
         
         #endregion
-
         
-
         #region Photon Callbacks
 
         /// <summary>
@@ -194,25 +220,27 @@ namespace BattleScripts
         {
             Instance = this;
             IsSuddenDeath = false;
-            LastBugCount = 0;
-            gState = GameState.WAITING;
-            TutorialOn = false;
-            if (tutorialPanel == null )
+            gameState = GameState.WAITING;
+            ActivePanel = PanelOn.NONE;
+            LastPanel = PanelOn.NONE;
+                        
+            if (TutorialPanel == null )
             {
                 Debug.Log("ERROR - Tutorial Panel not attached to GameManager");
             }
-            if (playerUI == null)
+            if (PlayerUI == null)
             {
                 Debug.Log("ERROR - Player Panel not attached to GameManager");
             }
-            tutorialPanel.SetActive(false);
+            TutorialPanel.SetActive(false);
+            PlayerUI.SetActive(true);
             UpdatePlayerPanel();
 
             if (Programmer.LocalPlayerInstance == null)
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                PhotonNetwork.Instantiate(this.PlayerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
             }
             else
             {
@@ -222,11 +250,27 @@ namespace BattleScripts
 
         void Update()
         {
+            CheckPanelOn();
             UpdatePlayerPanel();
             ActivateHand();
-            if (p2 && p1.Bugs >= 3 && p2.Bugs >= 3) IsSuddenDeath = true;
+            if (p2 && p1.Bugs >= 3 && p2.Bugs >= 3) IsSuddenDeath = true;            
+            CheckGameState();
             CheckPlayerWin();
-            switch (gState)
+           
+        }
+
+        #endregion
+
+        #region Private Methods
+        
+        void CheckGameState()
+        {
+            if (!p2) 
+            {
+                gameState = GameState.WAITING;
+                return;
+            }
+            switch (gameState)
             {
                 case GameState.WAITING:
                     // When both players have joined
@@ -241,14 +285,14 @@ namespace BattleScripts
                         {
                             p1.Turn = true;
                             p2.Turn = false;
-                            gState = GameState.P1_TURN;
+                            gameState = GameState.P1_TURN;
                             Debug.Log("Player 1 Turn");
                         }
                         else if (t2 > t1) 
                         {
                             p1.Turn = false;
                             p2.Turn = true;
-                            gState = GameState.P2_TURN;
+                            gameState = GameState.P2_TURN;
                             Debug.Log("Player 2 Turn");
                         }
                         else
@@ -257,36 +301,93 @@ namespace BattleScripts
                         }
                     }                        
                     break;
+
                 case GameState.P1_TURN:
                     if (!p1.Turn)
                     {
                         p2.Turn = true;
-                        gState =GameState.P2_TURN;
+                        gameState =GameState.P2_TURN;
                     }
                     break;
+
                 case GameState.P2_TURN:
                     if (!p2.Turn)
                     {
                         p1.Turn = true;
-                        gState =GameState.P1_TURN;
+                        gameState =GameState.P1_TURN;
                     }
                     break;
+
                 case GameState.P1_WIN:        
                     Debug.Log("Player 1 Won"); 
+                    Winner = p1;
+                    GameOverText.text = Consts.ON_WIN_TEXT;
+                    gameState = GameState.GAME_OVER;
                     break;
+
                 case GameState.P2_WIN:
                     Debug.Log("Player 2 Won");
+                    Winner = p2;
+                    GameOverText.text = Consts.ON_LOSE_TEXT;
+                    gameState = GameState.GAME_OVER;
                     break;
+
+                case GameState.GAME_OVER:                    
+                    if (p1.PlayAgain && p2.PlayAgain)
+                    {
+                        p1.ResetPlayerStats();
+                        p2.ResetPlayerStats();
+                        ActivePanel = PanelOn.GAME_ON;
+                        LastPanel = PanelOn.NONE;
+                        gameState = GameState.WAITING;
+                    }
+                    break;
+
                 default:
-                    Debug.Log("ERROR-Unknown Game State : " + gState);
+                    Debug.Log("ERROR-Unknown Game State : " + gameState);
                     break;
             }
         }
 
-        #endregion
+        void CheckPanelOn()
+        {
+            switch (ActivePanel)
+            {
+                case PanelOn.GAME_ON:
+                    PlayerUI.SetActive(true);
+                    TutorialPanel.SetActive(false);
+                    GameEndPanel.SetActive(false);
+                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
+                    break;
 
-        #region Private Methods
-        
+                case PanelOn.TUTORIAL:
+                    PlayerUI.SetActive(false);
+                    TutorialPanel.SetActive(true);
+                    GameEndPanel.SetActive(false);
+                    TutorialBtnText.text = Consts.HIDE_TUTORIAL;
+                    break;
+
+                case PanelOn.GAME_OVER:
+                    PlayerUI.SetActive(false);
+                    TutorialPanel.SetActive(false);
+                    GameEndPanel.SetActive(true);
+                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;                   
+                    break;
+
+                case PanelOn.NONE:
+                    PlayerUI.SetActive(false);
+                    TutorialPanel.SetActive(false);
+                    GameEndPanel.SetActive(false);
+                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
+                    break;
+
+                default:
+                    Debug.Log("ERROR-Unknown Panel Being Activated : " + ActivePanel);
+                    ActivePanel = PanelOn.GAME_ON;
+                    break;
+            }
+        }
+
         /// <summary>
         /// Checks to see if either player's have won
         ///
@@ -299,22 +400,37 @@ namespace BattleScripts
         void CheckPlayerWin()
         {
             if (!p2) return;
+
+            // This line is used to check for the cheat code
+            // In release build, this should not be here
+            if (Winner != null)
+            {
+                gameState = (Winner == p1) ? GameState.P1_WIN : GameState.P2_WIN; 
+            }
+
             if (p1.Bugs >= 3 && p1.Bugs > p2.Bugs)
             {
-                gState = GameState.P2_WIN;
+                gameState = GameState.P2_WIN;
             }
             if ((p1.Foo == 0 || p1.Bar == 0) && (p2.Foo != 0 && p2.Bar != 0) )
             {
-                gState = GameState.P2_WIN;
+                gameState = GameState.P2_WIN;
             }
             if (p2.Bugs >= 3 && p2.Bugs > p1.Bugs)
             {
-                gState = GameState.P1_WIN;
+                gameState = GameState.P1_WIN;
             }
             if ((p2.Foo == 0 || p2.Bar == 0) && (p1.Foo != 0 && p1.Bar != 0) )
             {
-                gState = GameState.P1_WIN;
+                gameState = GameState.P1_WIN;
             }            
+            if (gameState == GameState.P1_WIN || gameState == GameState.P2_WIN)
+            {
+                p1.ResetPlayerStats();
+                p2.ResetPlayerStats();
+                LastPanel = ActivePanel;
+                ActivePanel = PanelOn.GAME_OVER;
+            }
         }
 
         /// <summary>
@@ -322,11 +438,12 @@ namespace BattleScripts
         /// </summary>
         void UpdatePlayerPanel()
         {
-            string turn = " -> (Turn)";
+            string turn = " -> (Turn)"; // TODO: Need better way to visualize player turn
+
             if (p1 != null)
             {
                 p1Name.text = p1.GetName();
-                if (gState == GameState.P1_TURN)
+                if (gameState == GameState.P1_TURN)
                 {
                     p1Name.text += turn;
                 }
@@ -342,19 +459,23 @@ namespace BattleScripts
                 p1Bar.text = "";
                 p1Bugs.text = "";
                 p1Screen.text = "";
+                Debug.Log("ERROR - Gamanager has no player 1");
             }        
             if (p2 != null)
             {
                 p2Name.text = p2.GetName();
-                if (gState == GameState.P2_TURN)
+                if (gameState == GameState.P2_TURN)
                 {
                     p2Name.text += turn;
                 }
                 p2Foo.text = p2.GetFooText();
                 p2Bar.text = p2.GetBarText();
                 p2Bugs.text = p2.GetBugText();
-                p2Screen.text = p2.PrintScreen();                
+                p2Screen.text = p2.PrintScreen();            
+                   
                 if (ExeGameObj != null ) ExeGameObj.SetActive(true);
+
+                ActivePanel = (ActivePanel == PanelOn.NONE) ? PanelOn.GAME_ON : ActivePanel;
             }
             else 
             {
@@ -426,7 +547,7 @@ namespace BattleScripts
         public void AddCard(int num)
         {
             // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
-            if (gState != GameState.P1_TURN) return;
+            if (gameState != GameState.P1_TURN) return;
             if (num >= Consts.MAX_CARDS_IN_HAND || num < 0)
             {
                 Debug.Log("Add Card was passed an invalid index");
@@ -458,11 +579,7 @@ namespace BattleScripts
             if(p1) 
             {
                 p1.IsRegistered = false;
-                p1.Foo = Consts.START_FOO_POINTS;
-                p1.Bar = Consts.START_BAR_POINTS;
-                p1.Bugs = Consts.START_BUG_COUNT;
-                p1.Hand = null;
-                p1.Program = null;
+                p1.ResetPlayerStats();
                 Debug.Log("Cleared P1 Data");
             }
             if(p2) 
@@ -472,9 +589,10 @@ namespace BattleScripts
                 Debug.Log("Erased P2 Data...");
             }
             UpdatePlayerPanel();
+            ActivePanel = PanelOn.NONE;
+            LastPanel = PanelOn.NONE;
             PhotonNetwork.LeaveRoom();     
         }
-
 
         /// <summary>
         /// Link this function to the ExeGameObj.
@@ -484,7 +602,7 @@ namespace BattleScripts
         public void Execute()
         {
             // Gamemanger is in charge of p1 state, so return if game state is not p1 turn
-            if (gState != GameState.P1_TURN) return;
+            if (gameState != GameState.P1_TURN) return;
             if (p1view == null) 
             {
                 Debug.Log("ERROR: p1view is null"); 
@@ -507,7 +625,12 @@ namespace BattleScripts
         /// <summary>
         /// Used to register players to the game manager.
         ///
-        /// Allows players to refer to each other via GameManager.Instance.p1 or GameManager.Instance.p2
+        /// Allows players to refer to each other via GameManager.Instance.p1 
+        ///
+        /// or GameManager.Instance.p2
+        ///
+        /// Params :
+        /// - Programmer _prog -> Player to be registerd
         ///</summary>
         public void Register(Programmer _prog)
         {
@@ -533,14 +656,26 @@ namespace BattleScripts
             }
         }
 
+        /// <summary>
+        /// Toggle on and off tutorial panel
+        /// </summary>
         public void ToggleTutorial()
         {
-            TutorialOn = !TutorialOn;
-            tutorialPanel.SetActive(TutorialOn);
-            playerUI.SetActive(!TutorialOn);
-            TutorialBtnText.text = (TutorialOn) ? "Hide Tutorial" : "Show Tutorial";
-            
+            PanelOn cache = ActivePanel;
+            ActivePanel = (ActivePanel != PanelOn.TUTORIAL) ?  PanelOn.TUTORIAL : LastPanel;
+            LastPanel = cache;         
+            Debug.Log("Panel State is now" + ActivePanel);
         }
+
+        /// <summary>
+        /// Tells that player is ready to restart
+        /// </summary>
+        public void Rematch()
+        {
+            p1view.RPC("RpcRestart", RpcTarget.All);
+            GameOverText.text = Consts.ON_REMATCH_TEXT;
+        }
+        
 
         #endregion
     }

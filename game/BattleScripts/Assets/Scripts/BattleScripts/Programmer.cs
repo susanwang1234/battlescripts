@@ -13,7 +13,8 @@ namespace BattleScripts
 		#region Public Fields
 		
 		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-		public static GameObject LocalPlayerInstance;		
+		public static GameObject LocalPlayerInstance;	
+
 		[Tooltip("Leave this blank, will be linked to RNG class during runtime")]
 		public RNG rng;
 		/// <summary>
@@ -67,6 +68,11 @@ namespace BattleScripts
 		///	Checks to see if it is this player's turn
 		/// </summary>
 		public bool Turn;
+
+		/// <summary>
+		/// Will be true if player want's to play again
+		/// </summary>
+		public bool PlayAgain = false;
 
 		#endregion
 
@@ -128,6 +134,18 @@ namespace BattleScripts
 			Turn = false;	// places here instead of RPC because RPC version doesn't call self
 		}
 
+		public void ResetPlayerStats()
+		{
+			Foo = Consts.START_FOO_POINTS;
+			Bar = Consts.START_BAR_POINTS;
+			Bugs = Consts.START_BUG_COUNT;
+			IsRegistered = false;
+			PlayAgain = false;
+			Turn = false;
+			Hand = null;
+			Program = null;
+		}
+
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -145,13 +163,9 @@ namespace BattleScripts
 		}
 
 		// Use this for initialization
-		void Start () {
-			IsRegistered = false;
+		void Start () {			
 			rng = this.GetComponent<RNG>();
-			Foo = Consts.START_FOO_POINTS;
-			Bar = Consts.START_BAR_POINTS;
-			Bugs = Consts.START_BUG_COUNT;
-			Turn = false;
+			ResetPlayerStats();			
 			#if UNITY_5_4_OR_NEWER
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
@@ -176,10 +190,7 @@ namespace BattleScripts
 
 		void CalledOnLevelWasLoaded(int level)
 		{
-			IsRegistered = false;
-			Turn = false;
-			Program = null;
-			Hand = null;
+			ResetPlayerStats();
 			GameManager.Instance.Register(this);
 		}
 
@@ -231,6 +242,15 @@ namespace BattleScripts
 		{
 			// #critical need to switch p1 and p2 around to because game manager has different p1
 			Execute(GameManager.Instance.p2, GameManager.Instance.p1);			
+		}
+
+		/// <summary>
+		/// RPC Call to say player is ready to restart
+		/// </summary>
+		[PunRPC]
+		public void RpcRestart()
+		{
+			PlayAgain = true;
 		}
 		#endregion		
 	}
