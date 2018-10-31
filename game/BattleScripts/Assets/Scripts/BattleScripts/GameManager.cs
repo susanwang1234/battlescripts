@@ -29,6 +29,17 @@ namespace BattleScripts
     public class GameManager : MonoBehaviourPunCallbacks
     {
 
+        #region Enums
+        public enum GameState {
+            WAITING,
+            P1_TURN,
+            P2_TURN,
+            P1_WIN,
+            P2_WIN            
+        }
+
+        #endregion
+
         #region Private Fields
         /// <summary>
         /// The PhotonView for Player 1
@@ -51,54 +62,86 @@ namespace BattleScripts
         /// 
         /// Will not need to call a constructor for the GameManager
         /// </summary>
-        public static GameManager Instance;
-        public enum GameState {
-            WAITING,
-            P1_TURN,
-            P2_TURN,
-            P1_WIN,
-            P2_WIN            
-        }
+        public static GameManager Instance;        
 
+        /// <summary>
+        /// Use to check the game state
+        /// </summary>
         public GameState gState;
+
+        /// <summary>
+        /// If true, next bug will cause that player to lose
+        /// - if both players have bug at the same time, will continue on
+        /// If false, first player to get 0 point in foo or bar will lose or first player to get 3 bugs
+        /// TODO:
+        /// When true, show in game view
+        /// </summary>
+        public bool IsSuddenDeath;
+
+        public bool TutorialOn;
+
+        /// <summary>
+        /// When IsSuddenDeath is true, this will be set to the number of bugs both players ahve
+        /// </summary>
+        public int LastBugCount;
         #endregion
 
         // use this region to declaser objects that need to be paired in unity
         #region Unity Objects
         [Tooltip("The prefab used for representing the player")]
         public GameObject playerPrefab;
+        
         [Tooltip("The panel used for representing the player UI")]
         public GameObject playerUI;
+
+        [Tooltip("The panel used to show tutorial page")]
+        public GameObject tutorialPanel;
+
         [Tooltip("Leave this blank, should be filled when loaded into Room for 1 or Room for 2")]
         public Programmer p1;
+        
         [Tooltip("Leave this blank, should be filled when loaded into Room for 2")]
         public Programmer p2;
+        
         [Tooltip("Text object to display player 1 name")]
         public Text p1Name;
+        
         [Tooltip("Text object to display player 1 foo")]
         public Text p1Foo;
+        
         [Tooltip("Text object to display player 1 bar")]
         public Text p1Bar;
+        
         [Tooltip("Text object to display player 1 bugs")]
         public Text p1Bugs;
+        
         [Tooltip("Text object to display player 1 program")]
         public Text p1Screen;
+        
         [Tooltip("An array of button GameObjects to be used as player 1 cards")]
         public GameObject[] p1Cards = new GameObject[5];
+        
         [Tooltip("A button gameobject to link to Execute Call")]
         public GameObject ExeGameObj;
+        
         [Tooltip("A button gameobject to link to the Draw Card Call")]
         public GameObject DrawCardObj;
+        
         [Tooltip("Text Object to display player 2 name")]
         public Text p2Name;
+        
         [Tooltip("Text Object to display player 2 foo")]
         public Text p2Foo;
+        
         [Tooltip("Text Object to display player 2 bar")]
         public Text p2Bar;
+        
         [Tooltip("Text Object to display player 2 bugs")]
         public Text p2Bugs;
+        
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
+        
         #endregion
 
         
@@ -148,7 +191,19 @@ namespace BattleScripts
         void Start()
         {
             Instance = this;
+            IsSuddenDeath = false;
+            LastBugCount = 0;
             gState = GameState.WAITING;
+            TutorialOn = false;
+            if (tutorialPanel == null)
+            {
+                Debug.Log("ERROR - Tutorial Panel not attached to GameManager");
+            }
+            if (playerUI == null)
+            {
+                Debug.Log("ERROR - Player Panel not attached to GameManager");
+            }
+            tutorialPanel.SetActive(false);
             UpdatePlayerPanel();
 
             if (Programmer.LocalPlayerInstance == null)
@@ -167,6 +222,8 @@ namespace BattleScripts
         {
             UpdatePlayerPanel();
             ActivateHand();
+            if (p1.Bugs >= 3 && p2.Bugs >= 3) IsSuddenDeath = true;
+            CheckPlayerWin();
             switch (gState)
             {
                 case GameState.WAITING:
@@ -212,11 +269,11 @@ namespace BattleScripts
                         gState =GameState.P1_TURN;
                     }
                     break;
-                case GameState.P1_WIN:
-                    // TODO                    
+                case GameState.P1_WIN:        
+                    Debug.Log("Player 1 Won"); 
                     break;
                 case GameState.P2_WIN:
-                    // TODO
+                    Debug.Log("Player 2 Won");
                     break;
                 default:
                     Debug.Log("ERROR-Unknown Game State : " + gState);
@@ -227,6 +284,36 @@ namespace BattleScripts
         #endregion
 
         #region Private Methods
+        
+        /// <summary>
+        /// Checks to see if either player's have won
+        ///
+        /// If one player ends a turn with 0 foo or bar or has 3 bugs then that players lose
+        ///
+        /// If both players lose, the game goes into sudden death
+        ///
+        /// Next player to have a bug will lose
+        /// </summary>
+        void CheckPlayerWin()
+        {
+            if (p1.Bugs >= 3 && p1.Bugs > p2.Bugs)
+            {
+                gState = GameState.P2_WIN;
+            }
+            if ((p1.Foo == 0 || p1.Bar == 0) && (p2.Foo != 0 && p2.Bar != 0) )
+            {
+                gState = GameState.P2_WIN;
+            }
+            if (p2.Bugs >= 3 && p2.Bugs > p1.Bugs)
+            {
+                gState = GameState.P1_WIN;
+            }
+            if ((p2.Foo == 0 || p2.Bar == 0) && (p1.Foo != 0 && p1.Bar != 0) )
+            {
+                gState = GameState.P1_WIN;
+            }            
+        }
+
         /// <summary>
         /// Updates PlayerPanel every frome.
         /// </summary>
@@ -361,13 +448,28 @@ namespace BattleScripts
         /// <summary>
         /// Forces player to leave the game
         /// - Will also Unregisters all players registered to the GameManager
+        /// - Will also clear p1 data and set p2 to null
         /// </summary>
         public void LeaveRoom()
-        {
-            PhotonNetwork.LeaveRoom();     
-            if(p1) p1.IsRegistered = false;
-            if(p2) p2.IsRegistered = false;       
+        {            
+            if(p1) 
+            {
+                p1.IsRegistered = false;
+                p1.Foo = Consts.START_FOO_POINTS;
+                p1.Bar = Consts.START_BAR_POINTS;
+                p1.Bugs = Consts.START_BUG_COUNT;
+                p1.Hand = null;
+                p1.Program = null;
+                Debug.Log("Cleared P1 Data");
+            }
+            if(p2) 
+            {
+                p2.IsRegistered = false;       
+                p2 = null;
+                Debug.Log("Erased P2 Data...");
+            }
             UpdatePlayerPanel();
+            PhotonNetwork.LeaveRoom();     
         }
 
 
@@ -426,6 +528,13 @@ namespace BattleScripts
             {
                 _prog.Program = new List<Code>();
             }
+        }
+
+        public void ToggleTutorial()
+        {
+            TutorialOn = !TutorialOn;
+            tutorialPanel.SetActive(TutorialOn);
+            playerUI.SetActive(!TutorialOn);   
         }
 
         #endregion
