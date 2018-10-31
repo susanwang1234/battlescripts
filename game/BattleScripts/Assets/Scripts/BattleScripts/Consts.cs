@@ -21,7 +21,7 @@ namespace BattleScripts
 		public const string ON_WIN_TEXT = "You Win!";
 
 		public const string ON_LOSE_TEXT = "You Lose!";
-		public const string ON_REMATCH_TEXT = "Waiting for other player...";
+		public const string ON_REMATCH_TEXT = "Wait...";
 		#endregion
 
 		#region Start Values

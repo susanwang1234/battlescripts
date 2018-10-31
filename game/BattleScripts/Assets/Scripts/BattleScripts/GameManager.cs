@@ -337,6 +337,7 @@ namespace BattleScripts
                     {
                         p1.ResetPlayerStats();
                         p2.ResetPlayerStats();
+                        Winner = null;
                         ActivePanel = PanelOn.GAME_ON;
                         LastPanel = PanelOn.NONE;
                         gameState = GameState.WAITING;
@@ -399,7 +400,7 @@ namespace BattleScripts
         /// </summary>
         void CheckPlayerWin()
         {
-            if (!p2) return;
+            if (!p2 || gameState == GameState.GAME_OVER) return;
 
             // This line is used to check for the cheat code
             // In release build, this should not be here
