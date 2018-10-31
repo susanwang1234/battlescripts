@@ -204,7 +204,18 @@ namespace BattleScripts
 		[PunRPC]
 		public void DrawCard()
 		{
-			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) Hand.Add(Consts.CodeList[rng.GetRandomInt()]);
+			if (Hand.Count < Consts.MAX_CARDS_IN_HAND) 
+			{
+				if (Hand.Count == 0 && this.photonView.Owner.NickName == Consts.CHEAT_NAME)
+				{
+					Hand.Add(Consts.CodeList[0]);
+				}
+				else
+				{
+					Hand.Add(Consts.CodeList[rng.GetRandomInt()]);	
+				}
+				
+			}
 		}
 
 		/// <summary>
@@ -231,7 +242,11 @@ namespace BattleScripts
 		[PunRPC]
 		public void GenerateHand()
 		{
-			Hand = new List<Code>();		
+			Hand = new List<Code>();
+			if (this.photonView.Owner.NickName == Consts.CHEAT_NAME)
+			{
+				Hand[0] = Consts.CodeList[0];
+			}		
 		}
 
 		/// <summary>

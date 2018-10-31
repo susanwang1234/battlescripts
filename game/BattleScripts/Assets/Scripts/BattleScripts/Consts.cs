@@ -37,7 +37,7 @@ namespace BattleScripts
 		public const string CODE_DESC_3 = "p1.Bar += 16;";
 		public const string CODE_DESC_4 = "p2.Bar -= 16;";
 
-		public const string CHEAT_CODE = "CHEAT CODE FOR INSTANT WIN";
+		public const string CHEAT_CODE = "GameManager.Instance.Winner = this.Programmer;";
 		#endregion
 
 		#region Code Functions
@@ -80,12 +80,16 @@ namespace BattleScripts
 		#region Code List
 		public static List<Code> CodeList = new List<Code>()
 		{
+			new Code(CHEAT_CODE, CHEAT_ACTION),
 			new Code(CODE_DESC_1, ACTION_1),
 			new Code(CODE_DESC_2, ACTION_2),
 			new Code(CODE_DESC_3, ACTION_3),
-			new Code(CODE_DESC_4, ACTION_4),
-			new Code(CHEAT_CODE, CHEAT_ACTION)
+			new Code(CODE_DESC_4, ACTION_4)			
 		};
+		#endregion
+
+		#region Cheats
+		public const string CHEAT_NAME= "_H4X3R_";
 		#endregion
 	}
 }
