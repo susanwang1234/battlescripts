@@ -85,5 +85,4 @@
 <div class="footer">
 	<div id="footertext">Team 404 &copy; 2018</div>
 </div>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 @endsection
