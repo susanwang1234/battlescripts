@@ -2,6 +2,8 @@
 
 @section('content')
 <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 <div class="bg">
 	<div class="container">
 	    <div class="row justify-content-center">
@@ -27,7 +29,7 @@
 <br />
 <div class="flex-container">
 	<div class="box"><img src="/images/engineer.jpg" width="90%"/></div>
-	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow;">Defeat your friends in this battle coding simulator!</h1></div>
+	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow; font-size: 70px; font-variant: small-caps; font-family: 'VT323', monospace;">Defeat your friends in this battle coding simulator!</h1></div>
 </div>
 
 <br />
