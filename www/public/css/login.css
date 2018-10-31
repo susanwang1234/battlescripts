@@ -1,0 +1,25 @@
+h5 {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid lightgray; 
+   line-height: 0.1em;
+   margin: 30px 0 30px; 
+   color: lightgray;
+} 
+
+h5 span { 
+    background:#fff; 
+    padding:0 10px; 
+}
+
+.googleBtn {
+	background-color: #e81e2f; 
+	border-color: #af1623; 
+	color: white
+}
+
+.googleBtn:hover {
+	background-color: #af1623; 
+	border-color: #af1623; 
+	color: white
+}
