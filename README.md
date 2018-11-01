@@ -45,7 +45,8 @@ Apache:
 Using XAMPP as example:
 
 Local Database:
-1. Install MySql I recommend just installing XAMPP
+Good reference link for resetting default password https://stackoverflow.com/questions/24566453/resetting-mysql-root-password-with-xampp-on-localhost
+1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
 2. Go to xampp/phpMyAdmin/config.inc.php
 3. under /*Authentication type and info*/
 	- $cfg['Servers'][$i]['auth_type'] = 'cookie';

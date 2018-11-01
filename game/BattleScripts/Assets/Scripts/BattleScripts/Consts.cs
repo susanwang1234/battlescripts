@@ -15,7 +15,13 @@ namespace BattleScripts
 		#endregion
 
 		#region Constant Values
-		
+		public const string SHOW_TUTORIAL = "Show Tutorial";
+		public const string HIDE_TUTORIAL = "Hide Tutorial";
+
+		public const string ON_WIN_TEXT = "You Win!";
+
+		public const string ON_LOSE_TEXT = "You Lose!";
+		public const string ON_REMATCH_TEXT = "Wait...";
 		#endregion
 
 		#region Start Values
@@ -30,6 +36,8 @@ namespace BattleScripts
 		public const string CODE_DESC_2 = "p2.Foo -= 16;";
 		public const string CODE_DESC_3 = "p1.Bar += 16;";
 		public const string CODE_DESC_4 = "p2.Bar -= 16;";
+
+		public const string CHEAT_CODE = "GameManager.Instance.Winner = this.Programmer;";
 		#endregion
 
 		#region Code Functions
@@ -62,16 +70,26 @@ namespace BattleScripts
 			if (overflow < p2.Bar) p2.Bugs++;
 		}
 
+		private static void CHEAT_ACTION(Programmer p1, Programmer p2)
+		{
+			GameManager.Instance.Winner = p1;
+		}
+
 		#endregion
 
 		#region Code List
 		public static List<Code> CodeList = new List<Code>()
 		{
+			new Code(CHEAT_CODE, CHEAT_ACTION),
 			new Code(CODE_DESC_1, ACTION_1),
 			new Code(CODE_DESC_2, ACTION_2),
 			new Code(CODE_DESC_3, ACTION_3),
-			new Code(CODE_DESC_4, ACTION_4)
+			new Code(CODE_DESC_4, ACTION_4)			
 		};
+		#endregion
+
+		#region Cheats
+		public const string CHEAT_NAME= "_H4X3R_";
 		#endregion
 	}
 }
