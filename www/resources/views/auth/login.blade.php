@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+<link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 <div class="container">
@@ -65,6 +65,17 @@
                                 </a>
                             </div>
                         </div>
+                        <h5><span>OR</span></h5>
+                        	<div class="text-center">
+                                <a class="btn btn-primary googleBtn" href="{{ url('/user/login/google/redirect') }}">
+                                	<i class="fa fa-google"></i>
+                                    &nbsp; {{ __('Connect With Google') }}
+                                </a><br>
+                                <a class="btn btn-link" href="{{ route('register') }}">
+                                	{{ __('Register with email') }}
+                            	</a>
+                            </div>
+
                     </form>
                 </div>
             </div>

@@ -32,3 +32,7 @@ Route::group(['middleware' => ['auth', 'user']], function() {
 
     Route::get('/unity', 'unity@index')->name('unity');
 });
+
+// Google routing 
+Route::get('/user/login/google/redirect', 'Auth\SocialAuth\GoogleAuthController@redirect');
+Route::get('/user/login/google/callback', 'Auth\SocialAuth\GoogleAuthController@handleCallback');
