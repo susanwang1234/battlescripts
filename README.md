@@ -1,5 +1,7 @@
 # BattleScript
 
+http://battlescript.tk
+
 Programming can be challenging and boring, but it doesn't have to be. Battlescripts makes programming concepts easy to grasp by playing cards to execute code. Engage and interact with other users to develop new skills and enjoy coding!
 
 Our game introduces coding concepts to players and sharpen their ability to build programs using blocks of logic without having to worry about syntax or typing errors. Players will have to think strategically through the use of various different features: data types, loops, conditions, memory, and execution time, while keeping an eye on their own and their opponent's life points.
