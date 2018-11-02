@@ -14,7 +14,7 @@ namespace BattleScripts
 		/// Random value to be sync across clients
 		/// </summary>
 		[SerializeField]
-		int randVal = 0;
+		int randVal;
 		#endregion
 
 		#region Public Methods
@@ -30,7 +30,7 @@ namespace BattleScripts
 			int cache = randVal;	// old random value to return later
 			if (photonView.IsMine)
 			{
-				randVal = Random.Range(0,Consts.CodeList.Count);
+				randVal = Random.Range(1,Consts.CodeList.Count);
 			}
 			return cache;
 		}

@@ -40,4 +40,5 @@ MonoBehaviour:
   - Modify
   - DrawCard
   - RpcExecute
+  - RpcRestart
   DisableAutoOpenWizard: 1
