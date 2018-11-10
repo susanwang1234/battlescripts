@@ -15,6 +15,7 @@ namespace BattleScripts
 		#endregion
 
 		#region Constant Values
+		public const string ROOM_PROMPT = "Room Name :\n";
 		public const string SHOW_TUTORIAL = "Show Tutorial";
 		public const string HIDE_TUTORIAL = "Hide Tutorial";
 
