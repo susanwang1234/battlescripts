@@ -34,7 +34,6 @@
 
 	  <p>All of this happens live on a 2-player network connected game channel!</p>
 
-	  <p>Proud of your accomplishment? Make sure to share it on Facebook!</p>
 </div>
 
 <div class="footer">
