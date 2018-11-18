@@ -28,7 +28,7 @@
 <div class="textboxhome">
 <br />
 <div class="flex-container">
-	<div class="box"><img src="/images/engineer.jpg" width="90%"/></div>
+	<div class="box"><img src="/images/battle.png" width="90%"/></div>
 	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow; font-size: 70px; font-variant: small-caps; font-family: 'VT323', monospace;">Defeat your friends in this battle coding simulator!</h1></div>
 </div>
 
