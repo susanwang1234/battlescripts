@@ -358,14 +358,14 @@ namespace BattleScripts
                     PlayerUI.SetActive(true);
                     TutorialPanel.SetActive(false);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
+                    //TutorialBtnText.text = Consts.SHOW_TUTORIAL;
                     break;
 
                 case PanelOn.TUTORIAL:
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(true);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.HIDE_TUTORIAL;
+                    //TutorialBtnText.text = Consts.HIDE_TUTORIAL;
                     break;
 
                 case PanelOn.GAME_OVER:
@@ -379,7 +379,7 @@ namespace BattleScripts
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(false);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
+                    //TutorialBtnText.text = Consts.SHOW_TUTORIAL;
                     break;
 
                 default:
