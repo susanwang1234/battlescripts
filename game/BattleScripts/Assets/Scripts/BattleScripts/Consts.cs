@@ -25,6 +25,8 @@ public static class Consts
 
         public const string ON_LOSE_TEXT = "You Lose!";
         public const string ON_REMATCH_TEXT = "Wait...";
+
+        public const string COMMENT = "// ";
         #endregion
 
         #region Start Values
@@ -62,6 +64,11 @@ public static class Consts
         public const string CODE_DESC_20 = "p1.Bar += 1; ";
         public const string CODE_DESC_21 = "p2.Foo += 1; ";
         public const string CODE_DESC_22 = "p2.Bar += 1; ";
+
+        public const string CODE_DESC_23 = "swap(p1.Foo, p2.Foo); ";
+        public const string CODE_DESC_24 = "swap(p1.Bar, p2.Bar); ";
+
+        public const string CODE_DESC_25 = "p2.Program.CommentAll(); ";
 
         public const string CHEAT_CODE = "GameManager.Instance.Winner = this.Programmer;";
         #endregion
@@ -123,8 +130,6 @@ public static class Consts
             p1.Bar -= 16;
             if (overflow < p1.Bar) p1.Bugs++;
         }
-
-
 
         private static void ACTION_9(Programmer p1, Programmer p2)
         {
@@ -227,6 +232,28 @@ public static class Consts
             if (overflow > p2.Bar) p2.Bugs++;
         }
 
+        private static void ACTION_23(Programmer p1, Programmer p2)
+        {
+            byte temp = p1.Foo;
+            p1.Foo = p2.Foo;
+            p2.Foo = temp;
+        }
+
+        private static void ACTION_24(Programmer p1, Programmer p2)
+        {
+            byte temp = p1.Bar;
+            p1.Bar = p2.Bar;
+            p2.Bar = temp;
+        }
+
+        private static void ACTION_25(Programmer p1, Programmer p2)
+        {
+            foreach (Code c in p2.Program)
+            {
+                c.Comment();
+            }
+        }
+
         private static void CHEAT_ACTION(Programmer p1, Programmer p2)
         {
             GameManager.Instance.Winner = p1;
@@ -259,7 +286,10 @@ public static class Consts
             new Code(CODE_DESC_19, ACTION_19),
             new Code(CODE_DESC_20, ACTION_20),
             new Code(CODE_DESC_21, ACTION_21),
-            new Code(CODE_DESC_22, ACTION_22)
+            new Code(CODE_DESC_22, ACTION_22),
+            new Code(CODE_DESC_23, ACTION_23),
+            new Code(CODE_DESC_24, ACTION_24),
+            new Code(CODE_DESC_25, ACTION_25)
         };
         #endregion
 

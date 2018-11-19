@@ -15,6 +15,8 @@ namespace BattleScripts
 		
 		private string display;		
 		private Action action;
+
+		private bool isCommented;
 		
 		#endregion
 
@@ -24,15 +26,21 @@ namespace BattleScripts
 		/// </summary>
 		public string Display 
 		{
-			get {return display;}
+			get {
+				if (isCommented)
+				{
+					return Consts.COMMENT + display;	
+				}
+				return display;
+				}
 			set {Display = display;}
 		}
 		/// <summary>
 		/// Action delegate
 		/// - Can be used to define an Action that can be assigned to code to run
 		/// </summary>
-		public delegate void Action(Programmer p1, Programmer p2);
-		
+		public delegate void Action(Programmer p1, Programmer p2);			
+
 		#endregion
 
 		#region Public Methods
@@ -41,14 +49,27 @@ namespace BattleScripts
 		{
 			this.display = _display;
 			this.action = _action;
+			this.isCommented = false;
 		}
 
 		/// <summary>
 		/// Executes the code's action
 		/// </summary>
-		public void Execute(Programmer p1, Programmer p2)
+		public bool Execute(Programmer p1, Programmer p2)
 		{
-			this.action(p1, p2);
+			if (!this.isCommented)
+			{
+				this.action(p1, p2);
+			}		
+			return !this.isCommented;	
+		}
+
+		/// <summary>
+		/// Toggles the code to comment on or not
+		/// </summary>
+		public void Comment()
+		{
+			this.isCommented = !this.isCommented;
 		}
 
 		#endregion
