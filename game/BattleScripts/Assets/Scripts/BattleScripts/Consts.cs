@@ -16,9 +16,10 @@ public static class Consts
         public const int MAX_CARDS_IN_HAND = 5;
         #endregion
 
-        #region Constant Values
-        public const string SHOW_TUTORIAL = "Show Tutorial";
-        public const string HIDE_TUTORIAL = "Hide Tutorial";
+		#region Constant Values
+		public const string ROOM_PROMPT = "Room Name :\n";
+		public const string SHOW_TUTORIAL = "Show Tutorial";
+		public const string HIDE_TUTORIAL = "Hide Tutorial";
 
         public const string ON_WIN_TEXT = "You Win!";
 

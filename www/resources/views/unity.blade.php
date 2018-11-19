@@ -8,7 +8,7 @@
 	<script src="{{ URL::asset('game/TemplateData/UnityProgress.js')}}"></script>
 	<script src="{{ URL::asset('game/Build/UnityLoader.js')}}"></script>
 	<script>
-	  var gameInstance = UnityLoader.instantiate("gameContainer", "game/Build/game.json", {onProgress: UnityProgress});
+	  var gameInstance = UnityLoader.instantiate("gameContainer", "game/Build/Build.json", {onProgress: UnityProgress});
 	</script>
 	<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">

@@ -1,5 +1,7 @@
 # BattleScript
 
+http://battlescript.tk
+
 Programming can be challenging and boring, but it doesn't have to be. Battlescripts makes programming concepts easy to grasp by playing cards to execute code. Engage and interact with other users to develop new skills and enjoy coding!
 
 Our game introduces coding concepts to players and sharpen their ability to build programs using blocks of logic without having to worry about syntax or typing errors. Players will have to think strategically through the use of various different features: data types, loops, conditions, memory, and execution time, while keeping an eye on their own and their opponent's life points.
@@ -13,13 +15,18 @@ The 'www' folder contains the Laravel web framework files
 
 # Install Guide
 
-(Note: Highly recommend not downloading Apache and PHP separately. Huge pain in the ass.
-Use something like XAMMP or WAMP that packages the entire stack for you pre-configured)
-
+**Installing Laravel**
+=================================================================================================================
 Laravel:
 1. You need to download Composer online, and through it, install Laravel. Detailed installation guide found at https://laravel.com/docs/4.2/installation#configuration
 2. For local development, it is recommended that you run "php artisan serve" in the root directory.
 The website will be accessible from localhost:8000
+3. Also install the socialite Laravel package using command "composer require laravel/socialite"
+
+**For separate installations: (not complete either)**
+=================================================================================================================
+(Note: Highly recommend not downloading Apache and PHP separately. Huge pain in the ass.
+Use something like XAMMP or WAMP that packages the entire stack for you pre-configured)
 
 (Highly recommend not downloading these manually.
 We can consider doing these individually for production but I really don't think that would be the best idea)
@@ -34,8 +41,13 @@ Apache:
 4. Find LoadModule in httpd.conf and add "LoadModule php7_module C:/php/php7apache2_4.dll" (or wherever you installed php)
 5. Laravel uses some OpenSSL module and it needs to be configured somewhere in either httpd.conf or php.ini? Couldn't resolve
 
-Local Database:  
-good reference link for resetting default password https://stackoverflow.com/questions/24566453/resetting-mysql-root-password-with-xampp-on-localhost
+
+**Using preconfigured stack**
+=================================================================================================================
+Using XAMPP as example:
+
+Local Database:
+Good reference link for resetting default password https://stackoverflow.com/questions/24566453/resetting-mysql-root-password-with-xampp-on-localhost
 1. Install MySql I recommend just installing XAMPP https://www.apachefriends.org/index.html
 2. Go to xampp/phpMyAdmin/config.inc.php
 3. under /*Authentication type and info*/
