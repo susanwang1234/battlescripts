@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
