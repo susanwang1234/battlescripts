@@ -28,6 +28,9 @@ Route::get('/about', function () {
 Route::get('/start', function () {
     return view('start');
 });
+Route::group(['middleware' => ['auth', 'user']], function () {
+    Route::get('/matchPlayed', 'matchPlayed@index')->name('matchPlayed');
+});
 Route::group(['middleware' => ['auth', 'user']], function() {
 
     Route::get('/unity', 'unity@index')->name('unity');
