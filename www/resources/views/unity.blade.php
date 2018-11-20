@@ -2,7 +2,9 @@
 @if (empty(Auth::user()->email_verified_at))
 	<script type="text/javascript">
           window.location = "{{ url('/email/verify') }}";
+          var user = "{{ (Auth::user()->id }}";
     </script>
+
 @else
 	@extends('layouts.app')
 
