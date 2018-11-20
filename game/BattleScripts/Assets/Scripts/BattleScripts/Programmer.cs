@@ -123,25 +123,19 @@ namespace BattleScripts
 		{
 			if (Program == null || Program.Count == 0) return;
 			byte overflow;
-			List<int> toRemove = new List<int>();
-			int i = 0;
+
 			foreach (Code c in Program)
 			{				
-				bool success = c.Execute(p1, p2);								
-				if (success)
+				
+				if (c.Execute(p1, p2))
 				{
 					overflow = Bar;
-					Bar -= 16;
+					Bar -= 10;
 					if (overflow < Bar) Bugs++;
-					toRemove.Add(i);
 				}
-				i++;
 			}
-			foreach (int j in toRemove)
-			{
-				Program.RemoveAt(j);
-			}
-			//Program = new List<Code>();
+			
+			Program = new List<Code>();
 			Turn = false;	// places here instead of RPC because RPC version doesn't call self
 		}
 
@@ -219,11 +213,11 @@ namespace BattleScripts
 			{
 				if (Hand.Count == 0 && this.photonView.Owner.NickName == Consts.CHEAT_NAME)
 				{
-					Hand.Add(Consts.CodeList[0]);
+					Hand.Add(Consts.CodeList[0].Clone());
 				}
 				else
 				{
-					Hand.Add(Consts.CodeList[rng.GetRandomInt()]);	
+					Hand.Add(Consts.CodeList[rng.GetRandomInt()].Clone());	
 				}
 				
 			}
@@ -243,8 +237,12 @@ namespace BattleScripts
 			{
 				Program = new List<Code>();
 			}
+			if (Program.Count >= Consts.MAX_PROGRAM_SIZE)
+			{
+				return;
+			}
 			Program.Add(Hand[i]);
-			Hand[i] = Consts.CodeList[rng.GetRandomInt()];
+			Hand[i] = Consts.CodeList[rng.GetRandomInt()].Clone();
 			Turn = false;	// called on all photonviews, so safe to put here
 		}
 		/// <summary>
@@ -256,7 +254,7 @@ namespace BattleScripts
 			Hand = new List<Code>();
 			if (this.photonView.Owner.NickName == Consts.CHEAT_NAME)
 			{
-				Hand[0] = Consts.CodeList[0];
+				Hand[0] = Consts.CodeList[0].Clone();
 			}		
 		}
 
