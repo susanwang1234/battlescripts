@@ -38,11 +38,10 @@
 </div>
 
 <div class="webgl-content" style="margin-top:5%; box-shadow: 0px 0px 50px lime;">
-	  <div id="gameContainer" style="width: 960px; height: 600px"></div>
+	  <div id="gameContainer" style="width: 1260px; height: 780px"></div>
 	  <div class="footer" style="margin-top:0">
 		<div class="webgl-logo"></div>
-		<div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-		<div class="title" style="color:white;">BattleScript || Team 404 &copy; 2018</div>
+		<div class="title" style="color:white;">Team 404 &copy; 2018</div>
 	  </div>
 </div>
 
