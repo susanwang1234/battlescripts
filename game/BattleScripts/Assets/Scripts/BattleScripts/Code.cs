@@ -72,6 +72,14 @@ namespace BattleScripts
 			this.isCommented = !this.isCommented;
 		}
 
+		/// <summary>
+		/// Makes a deep copy of Code
+		/// </summary>
+		public Code Clone()
+		{
+			return new Code(this.display, this.action);
+		}
+
 		#endregion
 	}
 }
