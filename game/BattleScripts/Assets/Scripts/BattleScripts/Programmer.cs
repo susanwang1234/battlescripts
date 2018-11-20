@@ -123,14 +123,25 @@ namespace BattleScripts
 		{
 			if (Program == null || Program.Count == 0) return;
 			byte overflow;
+			List<int> toRemove = new List<int>();
+			int i = 0;
 			foreach (Code c in Program)
 			{				
-				c.Execute(p1, p2);				
-				overflow = Bar;
-				Bar -= 16;
-				if (overflow < Bar) Bugs++;
+				bool success = c.Execute(p1, p2);								
+				if (success)
+				{
+					overflow = Bar;
+					Bar -= 16;
+					if (overflow < Bar) Bugs++;
+					toRemove.Add(i);
+				}
+				i++;
 			}
-			Program = new List<Code>();
+			foreach (int j in toRemove)
+			{
+				Program.RemoveAt(j);
+			}
+			//Program = new List<Code>();
 			Turn = false;	// places here instead of RPC because RPC version doesn't call self
 		}
 

@@ -6,20 +6,20 @@
 @else
 	@extends('layouts.app')
 
-    @section('content')
-	<head>
-		<title>Unity WebGL Player | BattleScripts</title>
-		<link rel="shortcut icon" href="{{ asset('game/TemplateData/favicon.ico')}}">
-		<link rel="stylesheet" href="{{asset('game/TemplateData/style.css')}}">
-		<script src="{{ URL::asset('game/TemplateData/UnityProgress.js')}}"></script>
-		<script src="{{ URL::asset('game/Build/UnityLoader.js')}}"></script>
-		<script>
-		  var gameInstance = UnityLoader.instantiate("gameContainer", "game/Build/Build.json", {onProgress: UnityProgress});
-		</script>
-		<link href="{{ asset('css/home.css') }}" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
-	</head>
+@section('content')
+<head>
+	<title>Unity WebGL Player | BattleScripts</title>
+	<link rel="shortcut icon" href="{{ asset('game/TemplateData/favicon.ico')}}">
+	<link rel="stylesheet" href="{{asset('game/TemplateData/style.css')}}">
+	<script src="{{ URL::asset('game/TemplateData/UnityProgress.js')}}"></script>
+	<script src="{{ URL::asset('game/Build/UnityLoader.js')}}"></script>
+	<script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "game/Build/game.json", {onProgress: UnityProgress});
+    </script>
+	<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+</head>
 
 	<body>
 
