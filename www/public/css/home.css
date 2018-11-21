@@ -163,3 +163,27 @@ ul.list {
 	float:left;
 	padding: 15px;
 }
+
+
+.gameNav a:link {
+    color: #de686b;
+	text-decoration:none;
+}
+
+
+.gameNav a:visited {
+    color: #de686b;
+	text-decoration:none;
+}
+
+
+.gameNav a:hover {
+    color: #de686b;
+	text-decoration: underline;
+}
+
+
+.gameNav a:active {
+    color: #de686b;
+	text-decoration:none;
+}
