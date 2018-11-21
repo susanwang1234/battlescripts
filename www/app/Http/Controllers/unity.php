@@ -22,8 +22,8 @@ class unity extends Controller
     		try 
     		{
     			// assemble hash
-    			$inputHash = md5($request->input('player_id') . $request->input('opponent_id') . $request->input('result') . Config::get('app.dbkey'));
-    			echo ($request->input('player_id') . $request->input('opponent_id') . $request->input('result') . Config::get('app.dbkey'));
+    			$inputHash = md5($request->input('player_id') . $request->input('result') . Config::get('app.dbkey'));
+    			echo ($request->input('player_id') . $request->input('result') . Config::get('app.dbkey'));
     			echo "<br>";
     			echo $inputHash;
     			// if hash matches secret key, then allow database insertion
@@ -31,7 +31,7 @@ class unity extends Controller
 	    		{
 	    			//record match
 	    			DB::table('match_history')->insert([
-					    ['player_id' => $request->input('player_id'), 'opponent_id' => $request->input('opponent_id'), 'result' => $request->input('result'), 'created_at'=>now()]
+					    ['player_id' => $request->input('player_id'), 'result' => $request->input('result'), 'created_at'=>now()]
 					]);
 	    		}
 	            else
