@@ -15,27 +15,33 @@
 </div>
 
 <div class="content-bg">
-<div class=categories style="margin-top:20px;">
-	<ul>
-	    <li><a id="active" href="/index.php">HOME</a></li>
-		<li><a href="/about">ABOUT</a></li>
-		<li><a href="/tutorial">TUTORIAL</a></li>
-		<li><a href="/start">GETTING STARTED</a></li>
-		<li><a id="navPlayButton" href="/unity">PLAY NOW</a></li>
-	</ul>
-	<table>
-		<tr>
-			<th><h1>Opponent</h1></th>
-			<th><h1>Result</h1></th>
-		</tr>
-		@foreach ($record as $r)
-		<tr>
-			<td><h1>{{$r->opponent}}</h1></td>
-			<td><h1>{{$r->result}}<h1></td>
-		</tr>
-		@endforeach
-	</table>
+	<div class=categories style="margin-top:20px;">
+		<ul>
+			<li><a id="active" href="/index.php">HOME</a></li>
+			<li><a id="navPlayButton" href="/unity">GAME</a></li>
+		</ul>
+	</div>
+	<div class="textbox">
+		<h1>ScoreBoard</h1>
+		<table>
+			<tr>
+				<th>Opponent</th>
+				<th>Result</th>
+			</tr>
+			@foreach ($record as $r)
+			<tr>
+				<td>{{$r->opponent}}</td>
+				<td>{{$r->result}}</td>
+			</tr>
+			@endforeach
+		</table>
+	</div>
 </div>
+
+<div class="footer">
+  <div id="footertext">Team 404 &copy; 2018</div>
+</div>
+
 
 @endsection
 

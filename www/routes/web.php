@@ -29,7 +29,7 @@ Route::get('/start', function () {
     return view('start');
 });
 Route::group(['middleware' => ['auth', 'user']], function () {
-    Route::get('/matchPlayed', 'matchPlayed@index')->name('matchPlayed');
+    Route::get('/scores', 'scores@index')->name('scores');
 });
 Route::group(['middleware' => ['auth', 'user']], function() {
 

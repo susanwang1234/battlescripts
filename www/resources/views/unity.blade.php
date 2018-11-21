@@ -86,10 +86,12 @@
 					<div class="home" style="float:left;"><a href="/">Home</a></div>
 					<div class="about" style="float:left;"><a href="/about" target="_blank">About</a></div>
 					<div class="tutorial" style="float:left;"><a href="/tutorial" target="_blank">Tutorial</a></div>
+					<div class="scores" style="float:left;"><a href="/scores">Scores</a></div>
 				</div>
 			  </div>
 		</div>
 	</div>
+	
 
 	</body>
 @endif
