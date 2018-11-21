@@ -166,25 +166,25 @@ ul.list {
 }
 
 
-a:link {
+.gameNav a:link {
     color: #de686b;
 	text-decoration:none;
 }
 
 
-a:visited {
+.gameNav a:visited {
     color: #de686b;
 	text-decoration:none;
 }
 
 
-a:hover {
+.gameNav a:hover {
     color: #de686b;
 	text-decoration: underline;
 }
 
 
-a:active {
+.gameNav a:active {
     color: #de686b;
 	text-decoration:none;
 }
