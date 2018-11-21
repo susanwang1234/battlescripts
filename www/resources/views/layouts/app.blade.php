@@ -51,7 +51,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white;" v-pre>
-                                    Logged in as <strong>{{ Auth::user()->name }}</strong>  
+                                    Welcome <strong>{{ Auth::user()->name }} !</strong>  
                                     @if (!empty(Auth::user()->isAdmin))
                                         (Administrator)
                                     @endif
@@ -60,10 +60,10 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (!empty(Auth::user()->isAdmin))
-                                        <a class="dropdown-item" href="/">Admin Settings</a>
+                                        <a class="dropdown-item" href="/admin">Admin View</a>
                                         <div class="dropdown-divider"></div>
                                     @endif                              
-                                    <a class="dropdown-item" href="/"> 
+                                    <a class="dropdown-item" href="/profile"> 
                                         Profile
                                     </a>  
                                     <a class="dropdown-item" href="{{ route('logout') }}"

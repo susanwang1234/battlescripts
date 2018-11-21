@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class matchPlayed extends Controller
+class admin extends Controller
 {
     //
     public function index()
     {
-        $records = DB::table('record')->where('userName', Auth::user()->name)->get();
-        return view('matchPlayed', ['record' => $records]);
+        $users = DB::table('users')->get();
+        $match_history = DB::table('match_history')->get();
+        return view('admin', ['userlist' => $users, 'match_history' => $match_history]);
     }
 
 
