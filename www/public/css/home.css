@@ -164,3 +164,27 @@ ul.list {
 	float:left;
 	padding: 15px;
 }
+
+
+a:link {
+    color: #de686b;
+	text-decoration:none;
+}
+
+
+a:visited {
+    color: #de686b;
+	text-decoration:none;
+}
+
+
+a:hover {
+    color: #de686b;
+	text-decoration: underline;
+}
+
+
+a:active {
+    color: #de686b;
+	text-decoration:none;
+}

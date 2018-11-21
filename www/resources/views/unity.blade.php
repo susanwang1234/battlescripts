@@ -83,9 +83,9 @@
 				<div class="webgl-logo"></div>
 				<div class="title" style="color:white;">Team 404 &copy; 2018</div>
 				<div class="gameNav">
-					<div class="home" style="float:left;"><a href="/">Home</a></div>
-					<div class="about" style="float:left;"><a href="/about" target="_blank">About</a></div>
-					<div class="tutorial" style="float:left;"><a href="/tutorial" target="_blank">Tutorial</a></div>
+					<div class="home" style="float:left;"><a href="/">&nbsp;Home&nbsp;</a></div>
+					<div class="about" style="float:left;"><a href="/about" target="_blank">&nbsp;About&nbsp;</a></div>
+					<div class="tutorial" style="float:left;"><a href="/tutorial" target="_blank">&nbsp;Tutorial</a></div>
 				</div>
 			  </div>
 		</div>
