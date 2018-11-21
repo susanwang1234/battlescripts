@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -12,7 +13,7 @@ namespace BattleScripts
         /// </summary>
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
-        private byte maxPlayersPerRoom = 4;
+        private byte maxPlayersPerRoom = 2;
         #endregion
 
         #region Private Fields
@@ -27,6 +28,10 @@ namespace BattleScripts
         /// Typically this is used for the OnConnectedToMaster() callback.
         /// </summary>
         bool isConnecting;
+        /// <summary>
+        /// Checks to see if the custom room is being made
+        /// </summary>
+        bool isCustom;
         #endregion
 
         #region Public Fields
@@ -37,7 +42,9 @@ namespace BattleScripts
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
         private GameObject progressLabel;
-        
+        [Tooltip("The UI Textpanel to enter room name")]
+        [SerializeField]
+        public InputField roomField;
         #endregion
 
         #region MonoBehaviour CallBacks
@@ -73,15 +80,37 @@ namespace BattleScripts
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Get user id from clientside javascript then set the static field in Consts so that GameManager can access it
+        /// </summary>
+        public void SetUserId(string userId)
+        {
+            Debug.Log(userId);
+            Consts.userID = userId;
+            Debug.Log(userId);
+        }
+
+        /// <summary>
+        /// Get user name from clientside javascript then set the static fields in Consts so that GameManager can access them
+        /// </summary>
+        public void SetUserName(string userName)
+        {
+            Debug.Log(userName);
+            Consts.userName = userName;
+            Debug.Log(userName);
+        }
+
         /// <summary>
         /// Start the connection process.
         /// - If already connected, we attempt joining a random room
         /// - if not yet connected, Connect this application instance to Photon Cloud Network
         /// </summary>
-        public void Connect()
+            public void Connect()
         {
             // keep track of the will to join a room, because when we come back from the game we will get a callback that we are connected, so we need to know what to do then
             isConnecting = true;
+            isCustom = false;
 
             ToggleControlPanel(false);            
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
@@ -97,19 +126,59 @@ namespace BattleScripts
                 PhotonNetwork.ConnectUsingSettings();
             }
         }
+
+        /// <summary>
+        /// Start the connection process.
+        /// - If already connected, we attempt joining a random room
+        /// - if not yet connected, Connect this application instance to Photon Cloud Network
+        /// </summary>
+        public void ConnectCustom()
+        {
+            Debug.Log("Attempting to connect to custom room");            
+            string roomName = roomField.text;
+            isCustom = true;
+            if (roomName == "") return;
+            // keep track of the will to join a room, because when we come back from the game we will get a callback that we are connected, so we need to know what to do then
+            isConnecting = true;
+
+            ToggleControlPanel(false);            
+            RoomOptions roomOptions = new RoomOptions { MaxPlayers = maxPlayersPerRoom };
+            // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
+            if (PhotonNetwork.IsConnected)
+            {
+                Debug.Log("Photon Network is connected");
+                // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
+                PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, PhotonNetwork.CurrentLobby);
+            }
+            else
+            {
+                Debug.Log("Photon Network is not connected");
+                // #Critical, we must first and foremost connect to Photon Online Server.
+                PhotonNetwork.GameVersion = gameVersion;                
+                PhotonNetwork.ConnectUsingSettings();                                
+            }
+        }
         #endregion
 
         #region MonoBehaviourPunCallbacks Callbacks
         public override void OnConnectedToMaster()
         {
-            Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
+            
             // we don't want to do anything if we are not attempting to join a room.
             // this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
             // we don't want to do anything.
             if (isConnecting)
             {
-                // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
-                PhotonNetwork.JoinRandomRoom();
+                if (isCustom)
+                {
+                    PhotonNetwork.JoinOrCreateRoom(roomField.text, new RoomOptions { MaxPlayers = maxPlayersPerRoom }, PhotonNetwork.CurrentLobby);
+                }
+                else
+                {
+                    // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
+                    PhotonNetwork.JoinRandomRoom();
+                }
+                
             }
         }
         public override void OnDisconnected(DisconnectCause cause)

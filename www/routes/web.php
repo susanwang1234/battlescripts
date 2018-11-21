@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/tutorial', function () {
@@ -28,11 +28,22 @@ Route::get('/about', function () {
 Route::get('/start', function () {
     return view('start');
 });
+Route::group(['middleware' => ['auth', 'user']], function () {
+    Route::get('/profile', 'profile@index')->name('profile');
+});
+Route::group(['middleware' => ['auth', 'user']], function () {
+    Route::get('/admin', 'admin@index')->name('admin');
+});
 Route::group(['middleware' => ['auth', 'user']], function() {
-
     Route::get('/unity', 'unity@index')->name('unity');
 });
 
 // Google routing 
 Route::get('/user/login/google/redirect', 'Auth\SocialAuth\GoogleAuthController@redirect');
 Route::get('/user/login/google/callback', 'Auth\SocialAuth\GoogleAuthController@handleCallback');
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/unity/record/', 'unity@record');

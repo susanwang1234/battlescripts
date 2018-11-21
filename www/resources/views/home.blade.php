@@ -28,10 +28,22 @@
 <div class="textboxhome">
 <br />
 <div class="flex-container">
-	<div class="box"><img src="/images/engineer.jpg" width="90%"/></div>
-	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow; font-size: 70px; font-variant: small-caps; font-family: 'VT323', monospace;">Defeat your friends in this battle coding simulator!</h1></div>
+	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow; font-size: 70px; font-variant: small-caps; font-family: 'VT323', monospace;">Defeat your enemies in this battle coding simulator!</h1></div>
+	<div class="box"><img src="/images/battle.png" width="90%"/></div>
 </div>
 
+<br />
+<br />
+<br />
+<h2 class="review">Strategize and plan your moves. <br>Outsmart, outplay, and outcode your opponent!</h2>
+<br />
+<br />
+<br />
+
+<div class="flex-container">
+	<div class="box"><img src="/images/screenshot1.png" width="90%"/></div>
+	<div class="box"><h1 style="color:lime; text-shadow: 0px 0px 50px yellow; font-size: 70px; font-variant: small-caps; font-family: 'VT323', monospace;">Are you up for the challenge?</h1></div>
+</div>
 <br />
 <div style="margin:20px">
 	<h2 class="review">This is the most interesting game in 2018!</h2>
