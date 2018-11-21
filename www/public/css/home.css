@@ -30,11 +30,12 @@ h2 {
 }
 
 .categories li a:hover {
-    color: lime;
+    color: white;
 }
 
 #navPlayButton {
 	color: white;
+  font-weight: bold;
 	background-color: orange;
 }
 
@@ -53,8 +54,8 @@ h2 {
 
 {{--new content added by jyw30--}}
 #active {
-	background-color:pink;
-	color:brown;
+	background-color: darkgray;
+	color:white;
 }
 
 #activeplay {
@@ -136,7 +137,7 @@ ul.list {
 }
 
 .content-bg {
-	background-image: URL("/images/binarybg.jpeg");
+	background-image: URL("/images/polygon.png");
     background-position: center;
     background-repeat: repeat;
     background-size: cover;
@@ -144,19 +145,17 @@ ul.list {
 }
 
 .textboxhome {
-    background-color: #1a1a1a;
+
     text-align: justify;
     margin: 120px;
-    padding: 50px;
-    border-radius: 25px;
-    border: 3px solid #39ff14;
-	box-shadow: 0px 0px 50px lime;
+    padding: 20px;
+
 }
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
-	padding: 15px;
+	  padding: 15px;
     width: 70%;
 }
 

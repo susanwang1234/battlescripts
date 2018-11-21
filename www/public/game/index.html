@@ -9,7 +9,18 @@
     <script src="TemplateData/UnityProgress.js"></script>  
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/game.json", {onProgress: UnityProgress});
+    var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Build.json", {
+      onProgress: UnityProgress,
+      Module  : {
+          onRuntimeInitialized: function() {
+          setTimeout(function() {
+          gameInstance.SendMessage("Player Name","SetPlayerName", userName);
+          gameInstance.SendMessage("Launcher","SetUserId", userId);
+          gameInstance.SendMessage("Launcher","SetUserName", userName);
+        }, 2000);},
+    },
+    
+    });
     </script>
   </head>
   <body>

@@ -80,12 +80,33 @@ namespace BattleScripts
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Get user id from clientside javascript then set the static field in Consts so that GameManager can access it
+        /// </summary>
+        public void SetUserId(string userId)
+        {
+            Debug.Log(userId);
+            Consts.userID = userId;
+            Debug.Log(userId);
+        }
+
+        /// <summary>
+        /// Get user name from clientside javascript then set the static fields in Consts so that GameManager can access them
+        /// </summary>
+        public void SetUserName(string userName)
+        {
+            Debug.Log(userName);
+            Consts.userName = userName;
+            Debug.Log(userName);
+        }
+
         /// <summary>
         /// Start the connection process.
         /// - If already connected, we attempt joining a random room
         /// - if not yet connected, Connect this application instance to Photon Cloud Network
         /// </summary>
-        public void Connect()
+            public void Connect()
         {
             // keep track of the will to join a room, because when we come back from the game we will get a callback that we are connected, so we need to know what to do then
             isConnecting = true;
