@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/tutorial', function () {
@@ -39,3 +39,15 @@ Route::group(['middleware' => ['auth', 'user']], function() {
 // Google routing 
 Route::get('/user/login/google/redirect', 'Auth\SocialAuth\GoogleAuthController@redirect');
 Route::get('/user/login/google/callback', 'Auth\SocialAuth\GoogleAuthController@handleCallback');
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');

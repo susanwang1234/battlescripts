@@ -169,8 +169,6 @@ namespace BattleScripts
         
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
-
-        public Text TutorialBtnText;
         
         #endregion
         
@@ -358,28 +356,24 @@ namespace BattleScripts
                     PlayerUI.SetActive(true);
                     TutorialPanel.SetActive(false);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
                     break;
 
                 case PanelOn.TUTORIAL:
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(true);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.HIDE_TUTORIAL;
                     break;
 
                 case PanelOn.GAME_OVER:
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(false);
                     GameEndPanel.SetActive(true);
-                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;                   
                     break;
 
                 case PanelOn.NONE:
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(false);
                     GameEndPanel.SetActive(false);
-                    TutorialBtnText.text = Consts.SHOW_TUTORIAL;
                     break;
 
                 default:

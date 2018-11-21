@@ -34,6 +34,7 @@ class GoogleAuthController extends Controller
                 $user->provider_id = $googleUser->id;
                 $user->provider = 'google';
                 $user->password = md5(rand(1,10000)); //Since password is not nullable just make a random string?
+                $user->email_verified_at = now();
                 $user->save();
                 Auth::loginUsingId($user->id);
             }
