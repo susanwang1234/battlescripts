@@ -14,6 +14,7 @@ public static class Consts
         #region Max Values
         public const byte MAX_BUGS = 3;
         public const int MAX_CARDS_IN_HAND = 5;
+        public const int MAX_PROGRAM_SIZE = 6;
         #endregion
 
 		#region Constant Values
@@ -33,7 +34,7 @@ public static class Consts
         public const byte START_FOO_POINTS = 127;
         public const byte START_BAR_POINTS = 127;
         public const byte START_BUG_COUNT = 0;
-        public const string START_SCREEN = "// Code to be executed goes here\n// Press Execute to execute the code\n";
+        public const string START_SCREEN = "// Code to be executed goes here\n// Press Execute to execute the code\n// MAX 6 Lines\n";
         #endregion
 
         #region Code Descriptions
