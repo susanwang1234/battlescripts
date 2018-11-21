@@ -104,6 +104,16 @@ namespace BattleScripts
         /// </summary>
         public Programmer Winner;
 
+        /// <summary>
+        /// Your own username from client  
+        /// </summary>
+        public string userName = "";
+
+        /// <summary>
+        /// Your own user ID from client  
+        /// </summary>
+        public string userId = "";
+
 
         #endregion
 
@@ -260,7 +270,57 @@ namespace BattleScripts
         #endregion
 
         #region Private Methods
-        
+
+        // Computes MD5 hash of match data using a secret key
+        string Md5Sum(string strToEncrypt)
+        {
+            System.Text.UTF8Encoding ue = new System.Text.UTF8Encoding();
+            byte[] bytes = ue.GetBytes(strToEncrypt);
+
+            // encrypt bytes
+            System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] hashBytes = md5.ComputeHash(bytes);
+
+            // Convert the encrypted bytes back to a string (base 16)
+            string hashString = "";
+
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                hashString += System.Convert.ToString(hashBytes[i], 16).PadLeft(2, '0');
+            }
+
+            return hashString.PadLeft(32, '0');
+        }
+
+        // Do a POST request on website to store match results
+        IEnumerator PostScores(string p1, bool isWin)
+        {
+            string result = (isWin) ? "win" : "loss";
+            string secretKey = "MvbvBmXOQtZfg28";
+            //This connects to a server side php script that will add the name and score to a MySQL DB.
+            // Supply it with a string representing the players name and the players score.
+            string hash = Md5Sum(p1 + result + secretKey);
+
+            string post_url = Consts.APPLICATION_URL + "player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
+            Debug.Log(post_url);
+            // Post the URL to the site and create a download object to get the result.
+            WWW post = new WWW(post_url);
+            yield return post; // Wait until the download is done
+            if (post.error != null)
+            {
+                // If error, then try again but without the top level domain specified
+                post_url = "unity/record?player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
+                Debug.Log(post_url);
+                WWW secondPost = new WWW(post_url);
+                yield return secondPost;
+                if (post.error != null)
+                {
+                    WebController.Alert();
+                    Debug.Log("There was an error posting win record: " + post.error);
+                }
+            }
+        }
+
         void CheckGameState()
         {
             if (!p2) 
@@ -321,6 +381,7 @@ namespace BattleScripts
                     Winner = p1;
                     GameOverText.text = Consts.ON_WIN_TEXT;
                     gameState = GameState.GAME_OVER;
+                    StartCoroutine(PostScores(Consts.userID, true));
                     break;
 
                 case GameState.P2_WIN:
@@ -328,6 +389,7 @@ namespace BattleScripts
                     Winner = p2;
                     GameOverText.text = Consts.ON_LOSE_TEXT;
                     gameState = GameState.GAME_OVER;
+                    StartCoroutine(PostScores(Consts.userID, false));
                     break;
 
                 case GameState.GAME_OVER:                    
@@ -367,7 +429,7 @@ namespace BattleScripts
                 case PanelOn.GAME_OVER:
                     PlayerUI.SetActive(false);
                     TutorialPanel.SetActive(false);
-                    GameEndPanel.SetActive(true);
+                    GameEndPanel.SetActive(true);              
                     break;
 
                 case PanelOn.NONE:
@@ -670,7 +732,6 @@ namespace BattleScripts
             p1view.RPC("RpcRestart", RpcTarget.All);
             GameOverText.text = Consts.ON_REMATCH_TEXT;
         }
-        
 
         #endregion
     }

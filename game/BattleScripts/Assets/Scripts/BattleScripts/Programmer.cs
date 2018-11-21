@@ -254,7 +254,15 @@ namespace BattleScripts
 			Hand = new List<Code>();
 			if (this.photonView.Owner.NickName == Consts.CHEAT_NAME)
 			{
-				Hand[0] = Consts.CodeList[0].Clone();
+                if (Hand.Count == 0)
+                {
+                    Hand.Add(Consts.CodeList[0].Clone());
+                }
+                else
+                {
+                    Hand[0] = Consts.CodeList[0].Clone();
+                }
+				
 			}		
 		}
 
