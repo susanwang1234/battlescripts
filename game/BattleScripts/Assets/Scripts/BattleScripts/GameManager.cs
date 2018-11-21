@@ -179,8 +179,6 @@ namespace BattleScripts
         
         [Tooltip("Text Object to display player 2 program")]
         public Text p2Screen;
-
-        public Text TutorialBtnText;
         
         #endregion
         
