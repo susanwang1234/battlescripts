@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Photon.Pun;
+﻿using System.Collections.Generic;
 
 namespace BattleScripts
 {
-	/// <summary>
-	/// Consts is a class which stores all constants that are used across multiple scripts. 
-	/// </summary>
-	public static class Consts {
+    /// <summary>
+    /// Consts is a class which stores all constants that are used across multiple scripts. 
+    /// </summary>
+    public static class Consts {
 
 		#region Max Values
 		public const byte MAX_BUGS = 3;
@@ -16,13 +14,13 @@ namespace BattleScripts
 
 		#region Constant Values
 		public const string ROOM_PROMPT = "Room Name :\n";
-		public const string SHOW_TUTORIAL = "Show Tutorial";
-		public const string HIDE_TUTORIAL = "Hide Tutorial";
 
 		public const string ON_WIN_TEXT = "You Win!";
 
 		public const string ON_LOSE_TEXT = "You Lose!";
 		public const string ON_REMATCH_TEXT = "Wait...";
+
+        public static string APPLICATION_URL = "localhost/unity/record" + "?";
 		#endregion
 
 		#region Start Values
@@ -91,6 +89,13 @@ namespace BattleScripts
 
 		#region Cheats
 		public const string CHEAT_NAME= "_H4X3R_";
-		#endregion
-	}
+        #endregion
+
+        #region User Info
+        // These fields are set by launcher when the game is loaded at client side
+        // Just made them public static so GameManager would be able to access them when new scene loads
+        public static string userName = "";
+        public static string userID = "";
+        #endregion
+    }
 }

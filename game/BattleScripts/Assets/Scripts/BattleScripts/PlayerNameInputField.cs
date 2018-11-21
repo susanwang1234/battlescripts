@@ -21,25 +21,28 @@ namespace BattleScripts
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity during initialization phase.
         /// </summary>
-        void Start () {
+        void Start()
+        {
             string defaultName = string.Empty;
+
             InputField _inputField = this.GetComponent<InputField>();
-            if (_inputField!=null)
-            {
-                if (PlayerPrefs.HasKey(playerNamePrefKey))
-                {
-                    defaultName = PlayerPrefs.GetString(playerNamePrefKey);
-                    _inputField.text = defaultName;
-                }
-            }
-            PhotonNetwork.NickName =  defaultName;
+            defaultName = Consts.CHEAT_NAME;
+            _inputField.text = Consts.CHEAT_NAME;
+            //if (_inputField != null)
+            //{
+            //    if (PlayerPrefs.HasKey(playerNamePrefKey))
+            //    {
+            //        defaultName = PlayerPrefs.GetString(playerNamePrefKey);
+            //        _inputField.text = defaultName;
+            //    }
+            //}
+            PhotonNetwork.NickName = defaultName;
         }
         #endregion
 
-
         #region Public Methods
         /// <summary>
-        /// Sets the name of the player, and save it in the PlayerPrefs for future sessions.
+        /// Sets the name of the player, and save it in the PlayerPrefs for future sessions. Client-side javascript will use this function to pass in username
         /// </summary>
         /// <param name="value">The name of the Player</param>
         public void SetPlayerName(string value)
@@ -51,10 +54,8 @@ namespace BattleScripts
                 return;
             }
             PhotonNetwork.NickName = value;
-            PlayerPrefs.SetString(playerNamePrefKey,value);
+            PlayerPrefs.SetString(playerNamePrefKey, value);
         }
-
-
-        #endregion
     }
+            #endregion
 }
