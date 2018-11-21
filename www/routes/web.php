@@ -28,6 +28,9 @@ Route::get('/about', function () {
 Route::get('/start', function () {
     return view('start');
 });
+Route::group(['middleware' => ['auth', 'user']], function () {
+    Route::get('/matchPlayed', 'matchPlayed@index')->name('matchPlayed');
+});
 Route::group(['middleware' => ['auth', 'user']], function() {
 
     Route::get('/unity', 'unity@index')->name('unity');
@@ -41,10 +44,4 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes(['verify' => true]);
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes(['verify' => true]);
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/unity/record/', 'unity@record');
