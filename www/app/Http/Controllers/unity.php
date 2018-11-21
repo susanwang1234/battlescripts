@@ -15,8 +15,10 @@ class unity extends Controller
         return view('unity');
     }
 
+    // Insert wins into database (called by game)
     public function record(Request $request)
     {
+    	// Check user is logged in first
     	if (Auth::check())
     	{
     		try 

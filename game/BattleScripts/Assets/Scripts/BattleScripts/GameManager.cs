@@ -295,22 +295,28 @@ namespace BattleScripts
         // Do a POST request on website to store match results
         IEnumerator PostScores(string p1, bool isWin)
         {
-            Debug.Log("Am I here?");
             string result = (isWin) ? "win" : "loss";
             string secretKey = "MvbvBmXOQtZfg28";
             //This connects to a server side php script that will add the name and score to a MySQL DB.
             // Supply it with a string representing the players name and the players score.
             string hash = Md5Sum(p1 + result + secretKey);
 
-            string post_url = Consts.APPLICATION_URL + "/record?" + "&player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
-
+            string post_url = Consts.APPLICATION_URL + "player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
+            Debug.Log(post_url);
             // Post the URL to the site and create a download object to get the result.
             WWW post = new WWW(post_url);
             yield return post; // Wait until the download is done
-            Debug.Log("working?");
             if (post.error != null)
             {
-                Debug.Log("There was an error posting the high score: " + post.error);
+                // If error, then try again but without the top level domain specified
+                post_url = "unity/record?player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
+                Debug.Log(post_url);
+                WWW secondPost = new WWW(post_url);
+                yield return secondPost;
+                if (post.error != null)
+                {
+                    Debug.Log("There was an error posting win record: " + post.error);
+                }
             }
         }
 
@@ -374,8 +380,7 @@ namespace BattleScripts
                     Winner = p1;
                     GameOverText.text = Consts.ON_WIN_TEXT;
                     gameState = GameState.GAME_OVER;
-                    Debug.Log("hgm");
-                    var test = PostScores(Consts.userID, true);
+                    StartCoroutine(PostScores(Consts.userID, true));
                     break;
 
                 case GameState.P2_WIN:
@@ -383,7 +388,7 @@ namespace BattleScripts
                     Winner = p2;
                     GameOverText.text = Consts.ON_LOSE_TEXT;
                     gameState = GameState.GAME_OVER;
-                    var ass = PostScores(Consts.userID, false);
+                    StartCoroutine(PostScores(Consts.userID, false));
                     break;
 
                 case GameState.GAME_OVER:                    

@@ -86,7 +86,9 @@ namespace BattleScripts
         /// </summary>
         public void SetUserId(string userId)
         {
+            Debug.Log(userId);
             Consts.userID = userId;
+            Debug.Log(userId);
         }
 
         /// <summary>
@@ -94,7 +96,9 @@ namespace BattleScripts
         /// </summary>
         public void SetUserName(string userName)
         {
+            Debug.Log(userName);
             Consts.userName = userName;
+            Debug.Log(userName);
         }
 
         /// <summary>

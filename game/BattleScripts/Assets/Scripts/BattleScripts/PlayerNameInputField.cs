@@ -26,16 +26,14 @@ namespace BattleScripts
             string defaultName = string.Empty;
 
             InputField _inputField = this.GetComponent<InputField>();
-            defaultName = Consts.CHEAT_NAME;
-            _inputField.text = Consts.CHEAT_NAME;
-            //if (_inputField != null)
-            //{
-            //    if (PlayerPrefs.HasKey(playerNamePrefKey))
-            //    {
-            //        defaultName = PlayerPrefs.GetString(playerNamePrefKey);
-            //        _inputField.text = defaultName;
-            //    }
-            //}
+            if (_inputField != null)
+            {
+                if (PlayerPrefs.HasKey(playerNamePrefKey))
+                {
+                    defaultName = PlayerPrefs.GetString(playerNamePrefKey);
+                    _inputField.text = defaultName;
+                }
+            }
             PhotonNetwork.NickName = defaultName;
         }
         #endregion

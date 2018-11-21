@@ -10,15 +10,15 @@
     <script src="Build/UnityLoader.js"></script>
     <script>
 	var userName = "test";
-	var userId = "2";
+	var userId = "1";
 	  var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Build.json", {
 		  onProgress: UnityProgress,
 		Module: {
 			  onRuntimeInitialized: function() {
 			  setTimeout(function() {
-				gameInstance.SendMessage("Player Name","SetPlayerName", "_H4X3R_");
+				gameInstance.SendMessage("Player Name","SetPlayerName", userName);
 				gameInstance.SendMessage("Launcher","SetUserId", userId);
-				gameInstance.SendMessage("Launcher","SetUserName", "_H4X3R_");
+				gameInstance.SendMessage("Launcher","SetUserName", userName);
 			}, 2000);},
 	  },
 	  

@@ -23,7 +23,7 @@ namespace BattleScripts
 
         public const string COMMENT = "// ";
 
-        public static string APPLICATION_URL = "localhost/unity/record" + "?";
+        public static string APPLICATION_URL = UnityEngine.Application.absoluteURL + "/record?";
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace BattleScripts
         // These fields are set by launcher when the game is loaded at client side
         // Just made them public static so GameManager would be able to access them when new scene loads
         public static string userName = "";
-        public static string userID = "";
+        public static string userID = "1";
         #endregion
 
         #region Start Values
