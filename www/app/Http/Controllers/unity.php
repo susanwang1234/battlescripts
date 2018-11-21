@@ -18,8 +18,8 @@ class unity extends Controller
     // Insert wins into database (called by game)
     public function record(Request $request)
     {
-    	// Check user is logged in first
-    	if (Auth::check())
+    	// Check user is logged in first, and that the user logged in is the same person trying to record win
+    	if (Auth::check() && ((string)Auth::user()->id == $request->input('player_id')))
     	{
     		try 
     		{
@@ -38,16 +38,29 @@ class unity extends Controller
 	    		}
 	            else
 	            {
-	            	return "Secret key does not match!";
+	            	// if request is invalid for whatever reason, add "invalid" result to match history using currently logged in user
+		    		DB::table('match_history')->insert([
+						    ['player_id' => Auth::user()->id, 'result' => "invalid", 'created_at'=>now()]
+						]);
 	            }
 	        } 
 	        catch (Exception $e) {
 	            return $e;
 	        }
+
     	}
     	else
     	{
-    		echo "fail";
+    		try 
+    		{
+	    		// if request is invalid for whatever reason, add "invalid" result to match history using currently logged in user
+	    		DB::table('match_history')->insert([
+					    ['player_id' => Auth::user()->id, 'result' => "invalid", 'created_at'=>now()]
+					]);
+    		}
+	        catch (Exception $e) {
+	            return $e;
+	        }
     	}
         
     }

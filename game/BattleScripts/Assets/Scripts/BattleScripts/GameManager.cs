@@ -315,6 +315,7 @@ namespace BattleScripts
                 yield return secondPost;
                 if (post.error != null)
                 {
+                    WebController.Alert();
                     Debug.Log("There was an error posting win record: " + post.error);
                 }
             }
