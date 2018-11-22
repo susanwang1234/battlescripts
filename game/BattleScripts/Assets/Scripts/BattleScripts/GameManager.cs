@@ -308,16 +308,9 @@ namespace BattleScripts
             yield return post; // Wait until the download is done
             if (post.error != null)
             {
-                // If error, then try again but without the top level domain specified
-                post_url = "unity/record?player_id=" + WWW.EscapeURL(p1) + "&result=" + result + "&hash=" + hash;
-                Debug.Log(post_url);
-                WWW secondPost = new WWW(post_url);
-                yield return secondPost;
-                if (post.error != null)
-                {
                     WebController.Alert();
                     Debug.Log("There was an error posting win record: " + post.error);
-                }
+               
             }
         }
 
