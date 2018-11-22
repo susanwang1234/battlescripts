@@ -24,12 +24,15 @@ class editprofile extends Controller
 		$email = $request->input('email');
 	    $user=auth()->user();
 		$user->email=$email;
-		$myuser = DB::select('select * from users where id="' . $user->id . '"', [1]);
+		/*$myuser = DB::select('select * from users where id="' . $user->id . '"', [1]);
 		foreach ($myuser as $u) {
 			//echo $u->email;
 			$u->email=$email;
-		}
+		}*/
 		//echo $user->id;
-		return $myuser;
+		$sql = "UPDATE users SET email='" .  $email . "' WHERE " . "id=" . $user->id;
+		$affected = DB::update($sql);
+		return view('editprofile');
 	}
+	
 }

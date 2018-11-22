@@ -33,10 +33,31 @@
                                 </div>
 								
 							    <button type="submit" class="btn btn-primary">
-                                    {{ __('Submit') }}
+                                    {{ __('Change email') }}
                                 </button>
 								
                             </form>
+							
+							
+							<form method="post" action="{{ action('editprofile2@editpw') }}">
+							   @csrf
+								<div class="form-group row">
+								    <label for="username" class="col-4 col-form-label"><strong>New Password</strong></label> 
+									<div class="col-8" style="margin-top:5px;">  
+									<input type="password" name="password" value="">
+									</div>
+									
+									<label for="username" class="col-4 col-form-label"><strong>Retype Password</strong></label> 
+									<div class="col-8" style="margin-top:5px;">  
+									<input type="password" name="password2" value="">
+									</div>
+								</div>
+									
+								<button type="submit" class="btn btn-primary">
+									{{ __('Change password') }}
+								</button>
+							</form>
+								
 		                </div>
 		            </div>
 		            

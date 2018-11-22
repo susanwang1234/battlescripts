@@ -31,6 +31,7 @@ Route::get('/start', function () {
 Route::get('/editprofile', function () {
     return view('editprofile');
 });
+
 Route::group(['middleware' => ['auth', 'user']], function () {
     Route::get('/profile', 'profile@index')->name('profile');
 });
@@ -55,3 +56,5 @@ Route::get('/unity/record/', 'unity@record');
 
 Route::post('/editprofile', 'editprofile@edit');
 Route::put('/editprofile', 'editprofile@edit');
+Route::post('/profile', 'editprofile2@editpw');
+Route::put('/profile', 'editprofile2@editpw');
