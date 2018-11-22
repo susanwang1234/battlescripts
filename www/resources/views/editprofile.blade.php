@@ -16,18 +16,19 @@
 		            </div>
 		            <div class="row">
 		                <div class="col-md-12">
-		                    <form method="post" action="">
+		                    <form method="post" action="{{ action('editprofile@edit') }}">
+							   @csrf
                               <div class="form-group row">
-                                <label for="username" class="col-4 col-form-label"><strong>Current User Name</strong></label> 
+                                <label for="email" class="col-4 col-form-label"><strong>Current Email</strong></label> 
                                 <div class="col-8" style="margin-top:5px;">  
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->email }}
                                 </div>
                               </div>
 							  
                                 <div class="form-group row">
-                                <label for="username" class="col-4 col-form-label"><strong>New User Name</strong></label> 
+                                <label for="username" class="col-4 col-form-label"><strong>New Email</strong></label> 
                                 <div class="col-8" style="margin-top:5px;">  
-								<input type="text" name="username" value="">
+								<input type="email" name="email" value="">
 								</div>
                                 </div>
 								

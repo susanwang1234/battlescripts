@@ -50,3 +50,8 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/unity/record/', 'unity@record');
+
+//Route::post('/profile', ['uses' => 'editprofile@edit']);
+
+Route::post('/editprofile', 'editprofile@edit');
+Route::put('/editprofile', 'editprofile@edit');
