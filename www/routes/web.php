@@ -28,6 +28,10 @@ Route::get('/about', function () {
 Route::get('/start', function () {
     return view('start');
 });
+Route::get('/editprofile', function () {
+    return view('editprofile');
+});
+
 Route::group(['middleware' => ['auth', 'user']], function () {
     Route::get('/profile', 'profile@index')->name('profile');
 });
@@ -47,3 +51,10 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/unity/record/', 'unity@record');
+
+//Route::post('/profile', ['uses' => 'editprofile@edit']);
+
+Route::post('/editprofile', 'editprofile@edit');
+Route::put('/editprofile', 'editprofile@edit');
+Route::post('/profile', 'editprofile2@editpw');
+Route::put('/profile', 'editprofile2@editpw');

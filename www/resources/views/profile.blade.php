@@ -40,6 +40,16 @@
                                   {{ Auth::user()->created_at }}
                                 </div>
                               </div> 
+							  <div class="form-group row">
+                                <label for="date" class="col-4 col-form-label"><strong>Email verified?</strong></label> 
+                                <div class="col-8" style="margin-top:5px;">
+                                  @if (empty(Auth::user()->email_verified_at))
+									No
+								  @else
+									Yes
+								  @endif
+                                </div>
+                              </div> 
                               <div class="form-group row">
                                 <label for="Number of Wins" class="col-4 col-form-label"><strong>Number of Wins</strong></label> 
                                 <div class="col-8" style="margin-top:5px;">
